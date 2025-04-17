@@ -4,4 +4,17 @@
     .bg-gradient {
         background-image: linear-gradient(to bottom, #FFFAEB, #FFF1F2);
     }
+
+    .btn {
+        @apply inline-flex items-center px-5 py-1 w-fit
+        bg-[#F24171] rounded-[25px]
+        text-white text-xl font-bold
+        transition-colors duration-300;
+    }
+    .btn:disabled {
+        @apply opacity-50 cursor-not-allowed;
+    }
+    .btn:not(:disabled):hover {
+        @apply bg-[#d13461];
+    }
 }
