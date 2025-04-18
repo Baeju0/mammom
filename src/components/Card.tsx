@@ -16,7 +16,7 @@ export function Card ({
             {...rest}
             className={`card ${className}`}
     >
-            <h3 className={`title-text ${className}`}>{title}</h3>
+            <h3 className={`card-title-text ${className}`}>{title}</h3>
             {children}
         </div>
     );
