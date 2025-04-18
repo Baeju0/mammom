@@ -26,7 +26,12 @@
         w-full max-w-md;
     }
 
-    .title-text {
+    .card-title-text {
         @apply text-lg font-semibold mb-4;
+    }
+
+    .base-text {
+        @apply text-[#9F1139]
+        text-2xl font-bold mb-5 text-center
     }
 }
