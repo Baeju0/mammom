@@ -8,8 +8,8 @@ function App() {
     return (
         <div className="w-full min-h-screen bg-gradient">
 
-            <div className="p-10">
-                <header className="flex items-center justify-between px-20 py-5">
+            <div className="p-5">
+                <header className="flex items-center justify-between px-30 py-5">
                     <h1>여기 로고</h1>
                     <div className="flex items-center space-x-4">
                         <button
@@ -34,7 +34,7 @@ function App() {
                     </div>
                 </section>
 
-                <main className="grid grid-cols-2 grid-rows-min gap-6 h-full max-w-4xl mx-auto px-4 py-10">
+                <main className="grid grid-cols-2 grid-rows-min gap-6 h-full max-w-4xl mx-auto py-10">
                     <Card title="추천 활동" className="col-start-1 row-start-1">
                         컴포넌트 추가 공간
                     </Card>
