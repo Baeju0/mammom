@@ -2,6 +2,7 @@ import './index.css';
 import Card from "./components/Card.tsx";
 import Button from "./components/Button.tsx";
 import {Heart, Menu} from "lucide-react";
+import Logo from "./assets/logo.svg";
 
 function App() {
 
@@ -10,7 +11,7 @@ function App() {
 
             <div className="p-5">
                 <header className="flex items-center justify-between px-30 py-5">
-                    <h1>여기 로고</h1>
+                    <img src={Logo} alt="맘몸일기 로고"/>
                     <div className="flex items-center space-x-4">
                         <button
                             aria-label="메뉴 열기"
