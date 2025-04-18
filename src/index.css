@@ -25,4 +25,8 @@
         p-6 mx-auto
         w-full max-w-md;
     }
+
+    .title-text {
+        @apply text-lg font-semibold mb-4;
+    }
 }
