@@ -3,6 +3,7 @@ import Card from "./components/Card.tsx";
 import Button from "./components/Button.tsx";
 import {Heart, Menu} from "lucide-react";
 import Logo from "./assets/logo.svg";
+import { Link } from "react-router-dom";
 
 function App() {
 
@@ -11,12 +12,15 @@ function App() {
 
             <div className="p-5">
                 <header className="flex items-center justify-between px-30 py-5">
-                    <div className="flex items-center space-x-2">
-                        <img src={Logo} alt="맘몸일기 로고"/>
+                    <Link
+                        to="/"
+                        aria-label="메인 페이지로 이동"
+                        className="flex items-center space-x-2">
+                        <img src={Logo} alt="맘몸일기 로고" className="h-10 w-auto"/>
                         <span className="font-pretendard font-bold text-[24px] text-[#F44268]">
-                        맘몸일기
+                         맘몸일기
                         </span>
-                    </div>
+                    </Link>
 
                     <div className="flex items-center space-x-4">
                         <button
@@ -31,7 +35,7 @@ function App() {
                 </header>
 
                 <section className="grid grid-cols-3 items-center max-w-4xl mx-auto px-4 py-5">
-                    <div />
+                    <div/>
                     <h1 className="font-noto base-text">
                         따뜻한 하루를 시작해요!
                     </h1>
