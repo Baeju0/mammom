@@ -1,9 +1,22 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@sandoll/pretendard@latest/dist/web/variable/pretendardvariable.css');
+
+
 
 @layer utilities {
     .bg-gradient {
         background-image: linear-gradient(to bottom, #FFFAEB, #FFF1F2);
     }
+
+    .font-noto {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .font-pretendard {
+        font-family: 'Pretendard Variable', sans-serif;
+    }
+
 
     .btn {
         @apply inline-flex items-center px-5 py-1 w-fit

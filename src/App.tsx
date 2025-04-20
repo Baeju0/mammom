@@ -11,7 +11,13 @@ function App() {
 
             <div className="p-5">
                 <header className="flex items-center justify-between px-30 py-5">
-                    <img src={Logo} alt="맘몸일기 로고"/>
+                    <div className="flex items-center space-x-2">
+                        <img src={Logo} alt="맘몸일기 로고"/>
+                        <span className="font-pretendard font-bold text-[24px] text-[#F44268]">
+                        맘몸일기
+                        </span>
+                    </div>
+
                     <div className="flex items-center space-x-4">
                         <button
                             aria-label="메뉴 열기"
@@ -26,7 +32,7 @@ function App() {
 
                 <section className="grid grid-cols-3 items-center max-w-4xl mx-auto px-4 py-5">
                     <div />
-                    <h1 className="base-text">
+                    <h1 className="font-noto base-text">
                         따뜻한 하루를 시작해요!
                     </h1>
                     <div className="col-start-3 justify-self-end">
