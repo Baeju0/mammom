@@ -54,6 +54,7 @@ export default function Calendar({
                         table: "calendar-table",
                         weekday: "calendar-weekday",
                         day: "calendar-day",
+                        chevron:"calendar-icon"
                     }}
                 />
             </div>

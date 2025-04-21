@@ -71,10 +71,13 @@
         @apply w-full border border-gray-200 border-collapse
     }
     .calendar-weekday {
-        @apply border border-gray-200 bg-[#FEF3C6] p-1 text-center
+        @apply border border-gray-200 bg-[#FEF3C6] p-1 text-center h-10
     }
     .calendar-day {
-        @apply border border-gray-200 p-1 text-center
+        @apply border border-gray-200 p-1 text-center h-16 w-16
+    }
+    .calendar-icon {
+        @apply fill-[#9F1139] w-6 h-6
     }
 
     /*팝업*/
