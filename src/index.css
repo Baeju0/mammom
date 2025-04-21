@@ -5,19 +5,20 @@
 
 
 @layer utilities {
+    /*배경*/
     .bg-gradient {
         background-image: linear-gradient(to bottom, #FFFAEB, #FFF1F2);
     }
 
+    /*폰트*/
     .font-noto {
         font-family: 'Noto Sans KR', sans-serif;
     }
-
     .font-pretendard {
         font-family: 'Pretendard Variable', sans-serif;
     }
 
-
+    /*버튼*/
     .btn {
         @apply inline-flex items-center px-5 py-1 w-fit
         bg-[#F24171] rounded-[25px]
@@ -31,20 +32,53 @@
         @apply bg-[#d13461];
     }
 
+    /*카드 컴포넌트*/
     .card {
         @apply bg-[#FFFDFC] border border-[#FECFD4]
         shadow-lg rounded-[20px]
         h-auto min-w-[300px]
         p-6 mx-auto min-h-64
-        w-full max-w-md;
+        w-full max-w-md
+        flex flex-col;
     }
-
     .card-title-text {
-        @apply text-lg font-semibold mb-4;
+        @apply text-lg font-semibold mb-4 text-center;
     }
 
     .base-text {
         @apply text-[#9F1139]
         text-2xl font-bold mb-5 text-center
+    }
+
+    /*캘린더 컴포넌트*/
+    .day-today {
+        @apply bg-[#FEF3C6];
+    }
+    .day-selected {
+        @apply bg-[#FECFD4];
+    }
+    .day-record::after {
+        content: "";
+        @apply block w-1.5 h-1.5 bg-[#FB7084] rounded-full mx-auto mt-1;
+    }
+    .day-sat {
+        @apply text-[#934311];
+    }
+    .day-sun {
+        @apply text-[#D9043D];
+    }
+    .calendar-table {
+        @apply w-full border border-gray-200 border-collapse
+    }
+    .calendar-weekday {
+        @apply border border-gray-200 bg-[#FEF3C6] p-1 text-center
+    }
+    .calendar-day {
+        @apply border border-gray-200 p-1 text-center
+    }
+
+    /*팝업*/
+    .popup {
+        @apply fixed inset-0 flex items-center justify-center z-50
     }
 }
