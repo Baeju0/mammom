@@ -30,11 +30,13 @@ export default function Calendar({
             <div className="w-full max-w-md">
                 <DayPicker
                     locale={ko}
-                    month={month}
                     mode="single"
                     captionLayout="dropdown"
+                    startMonth={new Date(2025, 0)}
                     selected={selected ?? undefined}
                     onSelect={handleSelect}
+                    defaultMonth={month}
+                    animate
                     modifiers={{
                         today: new Date(),
                         record: recordedDate,
