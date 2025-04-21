@@ -4,8 +4,14 @@ import Button from "./components/Button.tsx";
 import {Heart, Menu} from "lucide-react";
 import Logo from "./assets/logo.svg";
 import { Link } from "react-router-dom";
+import Calendar from "./features/Calendar.tsx";
+import {useState} from "react";
 
 function App() {
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+    // 기록한 날짜 예시 데이터, JS는 달이 0부터 시작해서 3이 4월임.
+    const recordedDate = [new Date(2025, 3, 5), new Date(2025, 3, 13)];
 
     return (
         <div className="w-full min-h-screen bg-gradient">
@@ -52,7 +58,11 @@ function App() {
 
                     <Card title="달력"
                           className="col-start-2 row-start-1 row-span-2">
-                        컴포넌트 추가 공간
+                        <Calendar
+                            recordedDate={recordedDate}
+                            selected={selectedDate}
+                            onSelect={(date) => setSelectedDate(date ?? null)}
+                        />
                     </Card>
 
                     <Card title="데이터" className="col-start-1 row-start-2">
