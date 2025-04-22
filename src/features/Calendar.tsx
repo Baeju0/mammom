@@ -1,29 +1,18 @@
-import {useState} from "react";
 import { DayPicker } from "react-day-picker";
 import 'react-day-picker/dist/style.css';
 import { ko } from "date-fns/locale"
-import Card from "../components/Card.tsx";
-import { X } from 'lucide-react';
-import { isSameDay } from "date-fns";
 
 interface CalendarProps {
-    month?: Date;
     selected: Date | null;
     onSelect: (date: Date | undefined) => void;
     recordedDate?: Date[];
 }
 
 export default function Calendar({
-    month = new Date(),
-    selected,
     onSelect,
     recordedDate = [],
 }: CalendarProps) {
-    const [showPopup, setShowPopup] = useState(false);
-    const handleSelect = (date?: Date) => {
-        onSelect(date);
-        setShowPopup(!!date);
-    };
+
     console.log("recordedDate:", recordedDate);
 
     return (
@@ -34,9 +23,8 @@ export default function Calendar({
                     mode="single"
                     captionLayout="dropdown"
                     startMonth={new Date(2025, 0)}
-                    selected={selected ?? undefined}
-                    onSelect={handleSelect}
-                    defaultMonth={month}
+                    onSelect={onSelect}
+                    defaultMonth={new Date()}
                     animate
                     modifiers={{
                         today: new Date(),
@@ -59,16 +47,6 @@ export default function Calendar({
                     }}
                 />
             </div>
-
-            {showPopup && selected && recordedDate?.some(d => isSameDay(d, selected)) && (
-                <div className="popup">
-                    <Card title="선택한 날짜애옹">
-                        {/*임시 닫기 버튼*/}
-                        <X onClick={()=>setShowPopup(!showPopup)}/>
-                        {`Yo ${selected.toLocaleDateString("ko-KR")}`}
-                    </Card>
-                </div>
-            )}
         </div>
     );
 };
