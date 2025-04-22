@@ -4,6 +4,7 @@ import 'react-day-picker/dist/style.css';
 import { ko } from "date-fns/locale"
 import Card from "../components/Card.tsx";
 import { X } from 'lucide-react';
+import { isSameDay } from "date-fns";
 
 interface CalendarProps {
     month?: Date;
@@ -59,7 +60,7 @@ export default function Calendar({
                 />
             </div>
 
-            {showPopup && selected && (
+            {showPopup && selected && recordedDate?.some(d => isSameDay(d, selected)) && (
                 <div className="popup">
                     <Card title="선택한 날짜애옹">
                         {/*임시 닫기 버튼*/}
