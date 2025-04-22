@@ -1,12 +1,13 @@
 import './index.css';
 import Card from "./components/Card.tsx";
 import Button from "./components/Button.tsx";
-import {Heart, Menu, X} from "lucide-react";
+import {Heart, Menu} from "lucide-react";
 import Logo from "./assets/logo.svg";
 import { Link } from "react-router-dom";
 import Calendar from "./features/Calendar.tsx";
 import {useState} from "react";
 import {isSameDay} from "date-fns";
+import Popup from "./components/Popup.tsx";
 
 function App() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -71,10 +72,11 @@ function App() {
                             }}
                         />
                         {showPopup && selectedDate && (
-                            <div className="popup">
-                                <X onClick={() => setShowPopup(!showPopup)}/>
-                                {`Hello! ${selectedDate.toDateString()}`}
-                            </div>
+                            <Popup onClose={() => setShowPopup(false)}
+                                   selected={selectedDate}
+                                   title={"선택한 날짜"}>
+                                {`${selectedDate.toLocaleDateString('ko-KR')}를 선택하셨어요!`}
+                            </Popup>
                         )}
                     </Card>
 
