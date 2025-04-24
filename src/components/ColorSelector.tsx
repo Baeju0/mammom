@@ -2,8 +2,19 @@ import {useState} from "react";
 import { SketchPicker, ColorResult } from 'react-color';
 import Button from "./Button.tsx";
 
-export default function ColorSelector() {
-    const [customColor, setCustomColor] = useState('#000000');
+interface ColorSelectorProps {
+    selectedColor: string;
+    setSelectedColor: (color: string) => void;
+    customColor: string;
+    setCustomColor: (color: string) => void;
+}
+
+export default function ColorSelector({
+    selectedColor,
+    setSelectedColor,
+    customColor,
+    setCustomColor,
+}: ColorSelectorProps) {
     const [pickerOpen, setPickerOpen] = useState(false);
 
     const BASED_COLORS = [
@@ -19,8 +30,9 @@ export default function ColorSelector() {
             {BASED_COLORS.map(({color, label}, i) => (
                 <div key={i} className="circle-layout">
                     <div
-                        className="circle"
+                        className={`circle ${selectedColor === color ? 'picked-color' : ''}`}
                         style={{backgroundColor: color}}
+                        onClick={()=>{setSelectedColor(color)}}
                     />
                     <span className="circle-text">{label}</span>
                 </div>
@@ -41,16 +53,14 @@ export default function ColorSelector() {
                         />
                         <div className="flex flex-row justify-center gap-2 mt-2">
                             <Button
-                                className="mx-auto mt-2"
-                                onClick={() => setPickerOpen(false)}>
+                                onClick={() => {
+                                        setSelectedColor(customColor);
+                                        setPickerOpen(false)}}>
                                 완료
                             </Button>
                             <Button
-                                className="mx-auto mt-2 btn-cancel"
-                                onClick={() => {
-                                    setPickerOpen(false)
-                                    setCustomColor("#000000")
-                                }}>
+                                className="btn-cancel"
+                                onClick={() => setPickerOpen(false)}>
                                 취소
                             </Button>
                         </div>
