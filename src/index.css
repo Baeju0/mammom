@@ -59,6 +59,12 @@
     .card-large {
         @apply max-w-2xl mx-auto m-5;
     }
+    .card-backable {
+        @apply relative pt-3;
+    }
+    .card-back-btn {
+        @apply absolute left-4 top-4 text-[#F24771] hover:bg-[#FECFD4] rounded-full p-1;
+    }
     .card-title-text {
         @apply text-lg font-semibold mb-4 text-center;
     }
