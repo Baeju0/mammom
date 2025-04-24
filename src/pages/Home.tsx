@@ -15,11 +15,11 @@ export default function Home() {
     const recordedDate = [new Date(2025, 3, 5), new Date(2025, 3, 13)];
 
     return (
-        <div>
-            <div className="p-5">
-                <section className="grid grid-cols-3 items-center max-w-4xl mx-auto px-4 py-5">
+        <>
+            <div>
+                <section>
                     <div/>
-                    <h1 className="font-noto base-text">
+                    <h1 className="base-text">
                         따뜻한 하루를 시작해요!
                     </h1>
                     <div className="col-start-3 justify-self-end">
@@ -31,7 +31,7 @@ export default function Home() {
                     </div>
                 </section>
 
-                <main className="grid grid-cols-2 grid-rows-min gap-6 h-full max-w-4xl mx-auto py-10">
+                <main className="grid grid-cols-2 grid-rows-min gap-6 h-full py-10">
                     <Card title="추천 활동" className="col-start-1 row-start-1">
                         컴포넌트 추가 공간
                     </Card>
@@ -62,6 +62,6 @@ export default function Home() {
                     </Card>
                 </main>
             </div>
-        </div>
+        </>
     );
 }

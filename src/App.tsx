@@ -7,14 +7,16 @@ import Footer from "./components/Footer.tsx";
 
 function App() {
     return (
-        <div className="w-full min-h-screen bg-gradient">
-          <Header/>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/writing" element={<Writing />} />
-            </Routes>
-          <Footer/>
+        <div className="bg-gradient bg-layout font-noto">
+            <Header/>
+            <main className="bg-main">
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/writing" element={<Writing/>}/>
+                </Routes>
+            </main>
+                <Footer/>
         </div>
-    );
+);
 }
 export default App;

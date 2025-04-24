@@ -9,6 +9,17 @@
     .bg-gradient {
         background-image: linear-gradient(to bottom, #FFFAEB, #FFF1F2);
     }
+    .bg-layout {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .bg-main {
+        flex: 1;
+        padding: 5px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
 
     /*폰트*/
     .font-noto {
