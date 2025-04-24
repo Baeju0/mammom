@@ -42,6 +42,9 @@
     .btn:not(:disabled):hover {
         @apply bg-[#d13461];
     }
+    .btn-cancel {
+        @apply bg-gray-500;
+    }
 
     /*카드 컴포넌트*/
     .card {
@@ -102,5 +105,19 @@
         @apply absolute top-3 right-3 text-gray-400 hover:text-gray-700 cursor-pointer bg-transparent border-none;
         font-size: 1.5rem;
         line-height: 1;
+    }
+
+    /*글쓰기 선택창*/
+    .circle {
+        @apply w-10 h-10 rounded-full border-2 border-gray-200 cursor-pointer;
+    }
+    .circle-layout {
+        @apply flex flex-col items-center
+    }
+    .circle-text {
+        @apply mt-1 text-sm
+    }
+    .color-palette {
+        @apply absolute mt-20 left-1/2 z-10 flex flex-col items-center;
     }
 }
