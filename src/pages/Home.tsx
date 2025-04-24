@@ -2,7 +2,7 @@ import Card from "../components/Card.tsx";
 import Button from "../components/Button.tsx";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import Calendar from "../features/Calendar.tsx";
+import Calendar from "../components/Calendar.tsx";
 import {useState} from "react";
 import {isSameDay} from "date-fns";
 import Popup from "../components/Popup.tsx";
