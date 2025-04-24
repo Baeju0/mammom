@@ -19,6 +19,7 @@
         padding: 5px;
         max-width: 900px;
         margin: 0 auto;
+        width: 100%;
     }
 
     /*폰트*/
@@ -34,7 +35,7 @@
         @apply inline-flex items-center px-5 py-1 w-fit
         bg-[#F24171] rounded-[25px]
         text-white text-xl font-bold
-        transition-colors duration-300;
+        transition-colors duration-300 mx-auto mt-2;
     }
     .btn:disabled {
         @apply opacity-50 cursor-not-allowed;
@@ -51,9 +52,12 @@
         @apply bg-[#FFFDFC] border border-[#FECFD4]
         shadow-lg rounded-[20px]
         h-auto min-w-[300px]
-        p-6 mx-auto min-h-64
+        p-5 mx-auto min-h-64
         w-full max-w-md
         flex flex-col;
+    }
+    .card-large {
+        @apply max-w-2xl mx-auto m-5;
     }
     .card-title-text {
         @apply text-lg font-semibold mb-4 text-center;
@@ -107,7 +111,7 @@
         line-height: 1;
     }
 
-    /*글쓰기 선택창*/
+    /*글쓰기 - 컬러 선택창*/
     .circle {
         @apply w-10 h-10 rounded-full border-2 border-gray-200 cursor-pointer;
     }
@@ -119,5 +123,31 @@
     }
     .color-palette {
         @apply absolute mt-20 left-1/2 z-10 flex flex-col items-center;
+    }
+    .picked-color {
+        @apply ring-2 ring-black
+    }
+
+    /*input 컴포넌트*/
+    .input {
+        @apply bg-[#FFFDFC] border border-[#FECFD4]
+        rounded-[10px] px-4 py-2
+        text-[#9F1139] placeholder-[#FECFD4]
+        w-full outline-none transition mt-5;
+    }
+    .input:focus {
+        @apply border-[#F24771] shadow-md;
+    }
+
+    /*textarea 컴포넌트*/
+    .text-area {
+        @apply bg-[#FFFDFC] border border-[#FECFD4]
+        rounded-[10px] px-4 py-2
+        text-[#9F1139] placeholder-[#FECFD4]
+        min-h-[120px] sm:min-h-[160px] md:min-h-[200px]
+        w-full outline-none transition mt-5 resize-none;
+    }
+    .text-area:focus {
+        @apply border-[#F24771] shadow-md;
     }
 }
