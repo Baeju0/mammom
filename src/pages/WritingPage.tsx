@@ -5,10 +5,15 @@ import {useNavigate} from "react-router-dom";
 import Input from "../components/Input.tsx";
 import TextArea from "../components/TextArea.tsx";
 import Button from "../components/Button.tsx";
+import SymptomSelector from "../components/SymptomSelector.tsx";
 
 export default function WritingPage() {
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [customColor, setCustomColor] = useState('#000000');
+
+    const [selectedSymptom, setSelectedSymptom] = useState('');
+    const [customSymptom, setCustomSymptom] = useState('');
+
     const navigate = useNavigate();
 
     return(
@@ -39,6 +44,16 @@ export default function WritingPage() {
                         title="일기 내용"
                         placeholder="오늘 하루를 기록해보세요." />
                 </div>
+            </Card>
+            <Card
+                title="오늘의 신체 증상"
+                className="card-large">
+                <SymptomSelector
+                    selectedSymptom={selectedSymptom}
+                    setSelectedSymptom={setSelectedSymptom}
+                    customSymptom={customSymptom}
+                    setCustomSymptom={setCustomSymptom}
+                />
                 <Button>저장</Button>
             </Card>
         </>
