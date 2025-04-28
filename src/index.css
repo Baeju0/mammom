@@ -22,6 +22,16 @@
         width: 100%;
     }
 
+    /*날씨 정보*/
+    .weather-info-box {
+        @apply col-start-1 row-start-1 flex items-center
+        gap-2 bg-yellow-50/80 border border-rose-100
+        rounded-[10px] px-2 py-1 shadow-sm
+    }
+    .weather-icon-bg {
+        @apply border border-yellow-200 bg-white rounded-full
+    }
+
     /*폰트*/
     .font-noto {
         font-family: 'Noto Sans KR', sans-serif;

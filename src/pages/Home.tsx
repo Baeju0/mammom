@@ -51,7 +51,7 @@ export default function Home() {
                     <h1 className="base-text">
                         따뜻한 하루를 시작해요!
                     </h1>
-                    <div className="col-start-3 justify-self-end">
+                    <div className="col-start-3 justify-self-end mb-3">
                         <Link to="/writing">
                             <Button>
                                 <Heart color="#FFFFFF" className="mr-2"/>오늘의 기분
@@ -60,12 +60,13 @@ export default function Home() {
                     </div>
                 </section>
 
-                <div className="col-start-1 row-start-1 flex items-center gap-2">
+                <div className="weather-info-box">
                     {weather && (
                         <img src={`https://openweathermap.org/img/wn/${weather?.icon}@2x.png`}
                              alt={weather?.main}
                              width={24}
                              height={24}
+                             className="weather-icon-bg"
                         />)}
                     <span>{weather?.main} | {weather?.temp}°C </span>
                 </div>
