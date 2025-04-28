@@ -26,10 +26,10 @@
     .weather-info-box {
         @apply col-start-1 row-start-1 flex items-center
         gap-2 bg-yellow-50/80 border border-rose-100
-        rounded-[10px] px-2 py-1 shadow-sm
+        rounded-[10px] px-2 py-1 shadow-sm;
     }
     .weather-icon-bg {
-        @apply border border-yellow-200 bg-white rounded-full
+        @apply border border-yellow-200 bg-white rounded-full;
     }
 
     /*폰트*/
@@ -38,6 +38,32 @@
     }
     .font-pretendard {
         font-family: 'Pretendard Variable', sans-serif;
+    }
+
+    /*사이드바*/
+    .side-bg {
+        @apply fixed inset-y-0 right-0
+        w-90 bg-white shadow-lg
+        flex flex-col z-30;
+    }
+    .side-header {
+        @apply p-4 flex items-center
+        justify-between border-b;
+    }
+    .side-nav {
+        @apply flex-1 p-4 overflow-y-auto;
+    }
+    .side-nav-menu {
+        @apply block px-2 py-1
+        hover:bg-gray-100 rounded;
+    }
+    .side-logout {
+        @apply w-full text-left px-2 py-1
+        text-red-500 hover:bg-gray-100 rounded;
+    }
+    .side-nav-text {
+        @apply text-base font-medium
+        text-gray-700 hover:text-[#F44268]
     }
 
     /*버튼*/
