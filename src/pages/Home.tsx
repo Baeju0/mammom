@@ -1,6 +1,6 @@
 import Card from "../components/Card.tsx";
 import Button from "../components/Button.tsx";
-import { Heart } from "lucide-react";
+import {NotebookPen} from "lucide-react";
 import { Link } from "react-router-dom";
 import Calendar from "../components/Calendar.tsx";
 import {useEffect, useState} from "react";
@@ -44,17 +44,12 @@ export default function Home() {
     const recordedDate = [new Date(2025, 3, 5), new Date(2025, 3, 13)];
 
     return (
-        <>
             <div>
                 <section>
-                    <div/>
-                    <h1 className="base-text">
-                        따뜻한 하루를 시작해요!
-                    </h1>
-                    <div className="col-start-3 justify-self-end mb-3">
+                    <div className="col-start-3 justify-self-center mb-5">
                         <Link to="/writing">
                             <Button>
-                                <Heart color="#FFFFFF" className="mr-2"/>오늘의 기분
+                                <NotebookPen color="#FFFFFF" className="mr-3"/>오늘의 하루 기록하기
                             </Button>
                         </Link>
                     </div>
@@ -102,6 +97,5 @@ export default function Home() {
                     </Card>
                 </main>
             </div>
-        </>
     );
 }

@@ -81,7 +81,7 @@
 
     .base-text {
         @apply text-[#9F1139]
-        text-2xl font-bold mb-5 text-center
+        text-2xl font-bold text-center;
     }
 
     /*캘린더 컴포넌트*/
