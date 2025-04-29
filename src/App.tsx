@@ -4,6 +4,7 @@ import WritingPage from "./pages/WritingPage.tsx";
 import "./index.css";
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
+import RecommendedActivities from "./components/RecommendedActivities.tsx";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/writing" element={<WritingPage/>}/>
+                    <Route path="/activities-detauil/:id" element={<RecommendedActivities/>}/>
                 </Routes>
             </main>
                 <Footer/>

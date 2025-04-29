@@ -140,6 +140,15 @@
         @apply fill-[#9F1139] w-6 h-6
     }
 
+    /*추천 활동 컴포넌트*/
+    .activity-recommend {
+        @apply w-full rounded-[14px] py-4 px-2
+        text-center font-semibold text-[#F24771] text-base
+        bg-[#FFF5F6] hover:bg-[#FECFD4]/60
+        transition shadow border border-[#FECFD4]
+        focus:outline-none focus:ring-2 focus:ring-[#FECFD4]
+    }
+
     /*팝업*/
     .popup {
         @apply fixed inset-0 flex items-center justify-center z-50 bg-black/30;

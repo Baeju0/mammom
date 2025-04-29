@@ -7,6 +7,8 @@ import {useEffect, useState} from "react";
 import {isSameDay} from "date-fns";
 import Popup from "../components/Popup.tsx";
 import useUserLocation from "../hooks/useUserLocation.ts";
+import RecommendedActivities from "../components/RecommendedActivities.tsx";
+import DataChart from "../components/DataChart.tsx";
 
 interface Weather {
     temp: number;
@@ -68,7 +70,7 @@ export default function Home() {
 
                 <main className="grid grid-cols-2 grid-rows-min gap-6 h-full py-3">
                     <Card title="추천 활동" className="col-start-1 row-start-1">
-                        컴포넌트 추가 공간
+                        <RecommendedActivities/>
                     </Card>
 
                     <Card title="달력"
@@ -93,7 +95,7 @@ export default function Home() {
                     </Card>
 
                     <Card title="데이터" className="col-start-1 row-start-2">
-                        컴포넌트 추가 공간
+                        <DataChart/>
                     </Card>
                 </main>
             </div>
