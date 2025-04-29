@@ -45,8 +45,8 @@ export default function Home() {
 
     return (
             <div>
-                <section>
-                    <div className="col-start-3 justify-self-center mb-5">
+                <section className="flex justify-center">
+                    <div className="mb-5">
                         <Link to="/writing">
                             <Button>
                                 <NotebookPen color="#FFFFFF" className="mr-3"/>오늘의 하루 기록하기
