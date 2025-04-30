@@ -88,8 +88,7 @@
         @apply bg-[#FFFDFC] border border-[#FECFD4]
         shadow-lg rounded-[20px]
         h-auto min-w-[300px]
-        p-5 mx-auto min-h-64
-        w-full max-w-md
+        p-5 mx-auto w-full max-w-md
         flex flex-col;
     }
     .card-large {

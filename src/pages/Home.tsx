@@ -68,13 +68,14 @@ export default function Home() {
                     <span>{weather?.main} | {weather?.temp}°C </span>
                 </div>
 
-                <main className="grid grid-cols-2 grid-rows-min gap-6 h-full py-3">
-                    <Card title="추천 활동" className="col-start-1 row-start-1">
+                <main className="grid grid-cols-2 grid-rows-[auto_1fr] gap-6 py-3">
+                    <Card title="추천 활동" className="col-start-1 row-start-1 self-start h-auto">
                         <RecommendedActivities/>
                     </Card>
 
                     <Card title="달력"
                           className="col-start-2 row-start-1 row-span-2">
+                        <div className="mt-5">
                         <Calendar
                             recordedDate={recordedDate}
                             selected={selectedDate}
@@ -92,6 +93,7 @@ export default function Home() {
                                 {`${selectedDate.toLocaleDateString('ko-KR')}를 선택하셨어요!`}
                             </Popup>
                         )}
+                        </div>
                     </Card>
 
                     <Card title="데이터" className="col-start-1 row-start-2">
