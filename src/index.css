@@ -32,6 +32,16 @@
         @apply border border-yellow-200 bg-white rounded-full;
     }
 
+    /*데이터*/
+    .data-title {
+        @apply flex-1 text-center font-semibold;
+    }
+    .data-plus-font {
+        @apply absolute right-0 flex items-center
+        gap-1 text-gray-500 text-sm hover:text-pink-500
+        transition cursor-pointer;
+    }
+
     /*폰트*/
     .font-noto {
         font-family: 'Noto Sans KR', sans-serif;

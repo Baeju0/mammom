@@ -5,6 +5,7 @@ import "./index.css";
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import RecommendDetailPage from "./pages/RecommendDetailPage.tsx";
+import DataPage from "./pages/DataPage.tsx";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/writing" element={<WritingPage/>}/>
                     <Route path="/activities-detail/:id" element={<RecommendDetailPage/>}/>
+                    <Route path="/data-detail" element={<DataPage/>}/>
                 </Routes>
             </main>
                 <Footer/>

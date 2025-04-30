@@ -1,7 +1,7 @@
 import Card from "../components/Card.tsx";
 import Button from "../components/Button.tsx";
-import {NotebookPen} from "lucide-react";
-import { Link } from "react-router-dom";
+import {ArrowRight, NotebookPen} from "lucide-react";
+import {Link, useNavigate} from "react-router-dom";
 import Calendar from "../components/Calendar.tsx";
 import {useEffect, useState} from "react";
 import {isSameDay} from "date-fns";
@@ -19,6 +19,11 @@ interface Weather {
 export default function Home() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPopup, setShowPopup] = useState(false);
+
+    const navigate = useNavigate();
+    function handleGoToDataDetail() {
+        navigate("/data-detail");
+    }
 
     const { latitude, longitude } = useUserLocation();
     const [weather, setWeather] = useState<Weather | null>(null);
@@ -96,7 +101,21 @@ export default function Home() {
                         </div>
                     </Card>
 
-                    <Card title="데이터" className="col-start-1 row-start-2">
+                    <Card
+                        title={
+                            <div className="relative flex items-center justify-center w-full">
+                                <span className="data-title">감정 색상 Top5</span>
+                                <button
+                                    onClick={handleGoToDataDetail}
+                                    className="data-plus-font"
+                                    type="button"
+                                >
+                                    더보기 <ArrowRight width={14} height={14}/>
+                                </button>
+                            </div>
+                        }
+                        className="col-start-1 row-start-2"
+                    >
                         <DataChart/>
                     </Card>
                 </main>
