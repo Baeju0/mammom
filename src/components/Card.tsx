@@ -2,7 +2,7 @@ import {HTMLAttributes, ReactNode} from "react";
 import {ArrowLeft} from "lucide-react";
 
 interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
-    title: ReactNode;
+    title?: ReactNode;
     children: ReactNode;
     backable?: boolean;
     onBack?: () => void

@@ -35,14 +35,31 @@ export default function RecommendDetailPage() {
     if (!activity) return <div>활동 정보를 찾을 수 없습니다.</div>;
 
     return (
-        <Card title="추천 활동 상세정보">
-        <div>
-            <h2>{activity.title}</h2>
-            <p>이 감정에 추천하는 이유 : <br />{activity.reason}</p>
-            <p>어떻게 하면 좋을까요? <br />{activity.how}</p>
-            <p>추천 시간대 : {activity.time}</p>
-            <p>팁!<br />{activity.tip}</p>
-        </div>
+        <Card className="max-w-md mx-auto mt-5">
+
+            <div className="space-y-6">
+                <h2 className="activity-detail-title">{activity.title}</h2>
+
+                <div className="activity-detail-card">
+                    <p className="activity-detail-sub-title">🫧 이 감정에 추천하는 이유</p>
+                    <p className="activity-detail-text">- {activity.reason}</p>
+                </div>
+
+                <div className="activity-detail-card">
+                    <p className="activity-detail-sub-title">⭐️ 어떻게 하면 좋을까요?</p>
+                    <p className="activity-detail-text">- {activity.how}</p>
+                </div>
+
+                <div className="activity-detail-card">
+                    <span className="activity-detail-sub-title">🕰️ 추천 시간대</span>
+                    <p className="activity-detail-text">- {activity.time}</p>
+                </div>
+
+                <div className="activity-detail-card">
+                    <p className="activity-detail-sub-title">💡 팁!</p>
+                    <p className="activity-detail-text">- {activity.tip}</p>
+                </div>
+            </div>
         </Card>
     );
 }
