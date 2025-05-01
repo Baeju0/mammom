@@ -26,6 +26,7 @@ export default function SymptomSelector({
         {label: "식욕저하", icon: "😑"},
         {label: "구토", icon: "🤮"},
         {label: "설사", icon: "😨"},
+        {label: "없음", icon: "❌"},
         {label: "기타", icon:"🤔"},
     ];
 

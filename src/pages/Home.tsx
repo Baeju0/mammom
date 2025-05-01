@@ -20,6 +20,10 @@ export default function Home() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPopup, setShowPopup] = useState(false);
 
+    function handleGoToWritingDetail() {
+        navigate("/writing-detail");
+    }
+
     const navigate = useNavigate();
     function handleGoToDataDetail() {
         navigate("/data-detail");
@@ -48,7 +52,7 @@ export default function Home() {
     }, [latitude, longitude, API_KEY]);
 
     // 기록한 날짜 예시 데이터, JS는 달이 0부터 시작해서 3이 4월임.
-    const recordedDate = [new Date(2025, 3, 5), new Date(2025, 3, 13)];
+    const recordedDate = [new Date(2025, 3, 5), new Date(2025, 3, 13), new Date(2025, 4, 10)];
 
     return (
             <div>
@@ -92,10 +96,14 @@ export default function Home() {
                             }}
                         />
                         {showPopup && selectedDate && (
-                            <Popup onClose={() => setShowPopup(false)}
-                                   selected={selectedDate}
-                                   title={"선택한 날짜"}>
-                                {`${selectedDate.toLocaleDateString('ko-KR')}를 선택하셨어요!`}
+                            <Popup title={`${selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'})}의 일기`}
+                                    subTitle={"일기 제목"}
+                                   emotion={{ name: "기쁨", color: "#FFD600" }}
+                                   symptom="❌"
+                                   content="일기 내용"
+                                   onDetail={() => {handleGoToWritingDetail()}}
+                                   onClose={() => setShowPopup(false)}
+                            >
                             </Popup>
                         )}
                         </div>

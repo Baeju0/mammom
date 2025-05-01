@@ -184,12 +184,31 @@
         @apply fixed inset-0 flex items-center justify-center z-50 bg-black/30;
     }
     .popup-content {
-        @apply relative bg-white rounded-lg shadow-lg p-8 min-w-[300px] min-h-[150px] flex flex-col items-start;
+        @apply relative bg-white rounded-lg shadow-lg
+        p-8 min-w-[280px] max-w-[90vw] sm:min-w-[360px] sm:max-w-[500px]
+        min-h-[200px] max-h-[80vh] sm:min-h-[280px] sm:max-h-[600px]
+        flex flex-col items-start overflow-y-auto space-y-4;
     }
     .popup-close-button {
         @apply absolute top-3 right-3 text-gray-400 hover:text-gray-700 cursor-pointer bg-transparent border-none;
         font-size: 1.5rem;
         line-height: 1;
+    }
+    .popup-sub-title {
+        @apply text-base font-semibold text-gray-700;
+    }
+    .popup-circle {
+        @apply w-12 h-12 rounded-full border
+        flex items-center justify-center;
+    }
+    .popup-emotion-text {
+        @apply text-sm font-semibold;
+    }
+    .popup-circle-text {
+        @apply mt-1 text-xs text-gray-500;
+    }
+    .popup-diary-content {
+        @apply bg-[#FFF6F0] rounded-lg p-4 text-[#934311] text-sm;
     }
 
     /*글쓰기 - 컬러 선택창*/
