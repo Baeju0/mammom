@@ -18,7 +18,7 @@ export default function SymptomSelector({
     const SYMPTOMS = [
         {label:"두통", icon: "🤕"},
         {label:"복통", icon: "😫"},
-        {label:"피로", icon: "😪"},
+        {label:"피로", icon: "😴"},
         {label:"근육통", icon: "💪"},
         {label:"메스꺼움", icon: "🤢"},
         {label: "어지러움", icon: "😵‍💫"},
