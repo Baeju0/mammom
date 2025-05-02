@@ -6,6 +6,9 @@ import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import RecommendDetailPage from "./pages/RecommendDetailPage.tsx";
 import DataPage from "./pages/DataPage.tsx";
+import DetailedDiaryPage from "./pages/DetailedDiaryPage.tsx";
+import DiaryList from "./pages/DiaryList.tsx";
+import DiaryEditPage from "./pages/DiaryEditPage.tsx";
 
 function App() {
     return (
@@ -17,6 +20,9 @@ function App() {
                     <Route path="/writing" element={<WritingPage/>}/>
                     <Route path="/activities-detail/:id" element={<RecommendDetailPage/>}/>
                     <Route path="/data-detail" element={<DataPage/>}/>
+                    <Route path="/writing-list" element={<DiaryList/>}/>
+                    <Route path="/writing-list/:id" element={<DetailedDiaryPage/>}/>
+                    <Route path="/writing-list/:id/edit" element={<DiaryEditPage/>}/>
                 </Routes>
             </main>
                 <Footer/>
