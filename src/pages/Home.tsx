@@ -21,7 +21,7 @@ export default function Home() {
     const [showPopup, setShowPopup] = useState(false);
 
     function handleGoToWritingDetail() {
-        navigate("/writing-detail");
+        navigate("/writing-list/:id");
     }
 
     const navigate = useNavigate();

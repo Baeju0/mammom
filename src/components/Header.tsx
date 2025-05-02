@@ -21,7 +21,7 @@ export default function Header() {
         <div className="flex items-center space-x-6">
             <nav className="hidden md:flex space-x-6">
                 <p>사용자 이름</p>
-                <Link to="/" className="side-nav-text">일기 작성 내역</Link>
+                <Link to="/writing-list" className="side-nav-text">일기 작성 내역</Link>
                 <button className="side-nav-text !text-[#F44268]">
                     로그아웃
                 </button>
