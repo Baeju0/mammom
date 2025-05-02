@@ -55,36 +55,36 @@ export default function Home() {
     const recordedDate = [new Date(2025, 3, 5), new Date(2025, 3, 13), new Date(2025, 4, 10)];
 
     return (
-            <div>
-                <section className="flex justify-center">
-                    <div className="mb-5">
-                        <Link to="/writing">
-                            <Button>
-                                <NotebookPen color="#FFFFFF" className="mr-3"/>오늘의 하루 기록하기
-                            </Button>
-                        </Link>
-                    </div>
-                </section>
-
-                <div className="weather-info-box">
-                    {weather && (
-                        <img src={`https://openweathermap.org/img/wn/${weather?.icon}@2x.png`}
-                             alt={weather?.main}
-                             width={24}
-                             height={24}
-                             className="weather-icon-bg"
-                        />)}
-                    <span>{weather?.main} | {weather?.temp}°C </span>
+        <div>
+            <section className="flex justify-center">
+                <div className="mb-5">
+                    <Link to="/writing">
+                        <Button>
+                            <NotebookPen color="#FFFFFF" className="mr-3"/>오늘의 하루 기록하기
+                        </Button>
+                    </Link>
                 </div>
+            </section>
 
-                <main className="grid grid-cols-2 grid-rows-[auto_1fr] gap-6 py-3">
-                    <Card title="추천 활동" className="col-start-1 row-start-1 self-start h-auto">
-                        <RecommendedActivities/>
-                    </Card>
+            <div className="weather-info-box">
+                {weather && (
+                    <img src={`https://openweathermap.org/img/wn/${weather?.icon}@2x.png`}
+                         alt={weather?.main}
+                         width={24}
+                         height={24}
+                         className="weather-icon-bg"
+                    />)}
+                <span>{weather?.main} | {weather?.temp}°C </span>
+            </div>
 
-                    <Card title="달력"
-                          className="col-start-2 row-start-1 row-span-2">
-                        <div className="mt-5">
+            <main className="card-layout">
+                <Card title="추천 활동" className="recommend-card">
+                    <RecommendedActivities/>
+                </Card>
+
+                <Card title="달력"
+                      className="calendar-card">
+                    <div className="mt-5">
                         <Calendar
                             recordedDate={recordedDate}
                             selected={selectedDate}
@@ -96,37 +96,43 @@ export default function Home() {
                             }}
                         />
                         {showPopup && selectedDate && (
-                            <Popup title={`${selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'})}의 일기`}
-                                    subTitle={"일기 제목"}
-                                   emotion={{ name: "기쁨", color: "#FFD600" }}
+                            <Popup title={`${selectedDate.toLocaleDateString('ko-KR', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}의 일기`}
+                                   subTitle={"일기 제목"}
+                                   emotion={{name: "기쁨", color: "#FFD600"}}
                                    symptom="❌"
                                    content="일기 내용"
-                                   onDetail={() => {handleGoToWritingDetail()}}
+                                   onDetail={() => {
+                                       handleGoToWritingDetail()
+                                   }}
                                    onClose={() => setShowPopup(false)}
                             >
                             </Popup>
                         )}
-                        </div>
-                    </Card>
+                    </div>
+                </Card>
 
-                    <Card
-                        title={
-                            <div className="relative flex items-center justify-center w-full">
-                                <span className="data-title">감정 색상 Top5</span>
-                                <button
-                                    onClick={handleGoToDataDetail}
-                                    className="data-plus-font"
-                                    type="button"
-                                >
-                                    더보기 <ArrowRight width={14} height={14}/>
-                                </button>
-                            </div>
-                        }
-                        className="col-start-1 row-start-2"
-                    >
-                        <DataChart/>
-                    </Card>
-                </main>
-            </div>
+                <Card
+                    title={
+                        <div className="data-card-plus">
+                            <span className="data-title">감정 색상 Top5</span>
+                            <button
+                                onClick={handleGoToDataDetail}
+                                className="data-plus-font"
+                                type="button"
+                            >
+                                더보기 <ArrowRight width={14} height={14}/>
+                            </button>
+                        </div>
+                    }
+                    className=""
+                >
+                    <DataChart/>
+                </Card>
+            </main>
+        </div>
     );
 }

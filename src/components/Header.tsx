@@ -6,20 +6,20 @@ import {useState} from "react";
 export default function Header() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    return <header className="flex items-center justify-between px-30 py-5">
+    return <header className="header">
         <Link
             to="/"
             aria-label="메인 페이지로 이동"
-            className="flex items-center space-x-2">
-            <img src={Logo} alt="맘몸일기 로고" className="h-10 w-auto"/>
-            <span className="font-pretendard font-bold text-[24px] text-[#F44268]">
+            className="header-link">
+            <img src={Logo} alt="맘몸일기 로고" className="header-logo"/>
+            <span className="header-logo-text">
             맘몸일기
-            <p className="base-text !text-xs">따뜻한 하루를 시작해요!</p>
+            <p className="base-text !text-xs sm:!text-sm">따뜻한 하루를 시작해요!</p>
        </span>
         </Link>
 
-        <div className="flex items-center space-x-6">
-            <nav className="hidden md:flex space-x-6">
+        <div className="header-nav-box">
+            <nav className="header-nav">
                 <p>사용자 이름</p>
                 <Link to="/writing-list" className="side-nav-text">일기 작성 내역</Link>
                 <button className="side-nav-text !text-[#F44268]">
@@ -29,13 +29,11 @@ export default function Header() {
 
 
             {/*모바일 버전에서는 햄버거 메뉴로 표시되도록*/}
-            <div className="flex items-center space-x-4">
+            <div className="header-hamburger">
             <button
                     aria-label="메뉴 열기"
-                    className="md:hidden"
-                    onClick={() => {
-                        setIsOpen(!isOpen)
-                    }}
+                    className="p-1"
+                    onClick={() => {setIsOpen(!isOpen)}}
                 >
                     <Menu size={28} color="#934311"/>
                 </button>
@@ -56,7 +54,7 @@ export default function Header() {
                             <ul className="space-y-3">
                                 <li>
                                     <Link
-                                        to="/"
+                                        to="/writing-list"
                                         className="side-nav-menu"
                                     >
                                         일기 작성 내역
