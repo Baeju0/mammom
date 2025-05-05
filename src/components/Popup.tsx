@@ -3,26 +3,20 @@ import {HTMLAttributes} from "react";
 import Button from "./Button.tsx";
 
 interface PopupProps extends HTMLAttributes<HTMLDivElement>{
-    title: string
-    subTitle: string
-    emotion: { name: string, color: string }
-    symptom: string;
-    content: string;
-    onDetail: () => void;
+    title?: string;
     onClose: () => void;
+    children: React.ReactNode;
+    onSave?: () => void;
 }
 
 export default function Popup({
     title,
-    subTitle,
-    emotion,
-    symptom,
-    content,
-    className='',
-    onDetail,
     onClose,
+    className='',
+    children,
+    onSave,
     ...rest
-}: PopupProps) {
+    }: PopupProps) {
     return (
         <div {...rest} className={`popup ${className}`}>
             <div className="popup-content">
@@ -33,42 +27,9 @@ export default function Popup({
                 >
                     <X />
                 </button>
-
                 <h3 className="text-xl font-bold">{title}</h3>
-                <div className="popup-sub-title">{subTitle}</div>
-
-                <div className="flex gap-6 mt-2">
-                    <div className="flex flex-col items-center">
-                        <div
-                            className="popup-circle"
-                            style={{ background: emotion.color, borderColor: emotion.color }}
-                        >
-                            <span className="popup-emotion-text" style={{ color: '#9F1139' }}>{emotion.name}</span>
-                        </div>
-                        <span className="popup-circle-text">감정</span>
-                    </div>
-
-                    <div className="flex flex-col">
-                        <div
-                            className="popup-circle"
-                            style={{ borderColor: emotion.color }}
-                        >
-                            <span className="text-2xl">{symptom}</span>
-                        </div>
-                        <span className="popup-circle-text">신체 증상</span>
-                    </div>
-                </div>
-
-                <div className="popup-diary-content">
-                    {content.length > 100 ? content.slice(0, 100) + "..." : content}
-                </div>
-
-                <Button
-                    onClick={onDetail}
-                    type="button"
-                >
-                    상세보기
-                </Button>
+                {children}
+                <Button className="popup-button" onClick={onSave}>저장</Button>
             </div>
         </div>
     );

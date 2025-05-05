@@ -5,7 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import Calendar from "../components/Calendar.tsx";
 import {useEffect, useState} from "react";
 import {isSameDay} from "date-fns";
-import Popup from "../components/Popup.tsx";
+import DiaryPopup from "../components/DiaryPopup.tsx";
 import useUserLocation from "../hooks/useUserLocation.ts";
 import RecommendedActivities from "../components/RecommendedActivities.tsx";
 import DataChart from "../components/DataChart.tsx";
@@ -96,21 +96,21 @@ export default function Home() {
                             }}
                         />
                         {showPopup && selectedDate && (
-                            <Popup title={`${selectedDate.toLocaleDateString('ko-KR', {
+                            <DiaryPopup title={`${selectedDate.toLocaleDateString('ko-KR', {
                                 year: 'numeric',
                                 month: 'long',
                                 day: 'numeric'
                             })}의 일기`}
-                                   subTitle={"일기 제목"}
-                                   emotion={{name: "기쁨", color: "#FFD600"}}
-                                   symptom="❌"
-                                   content="일기 내용"
-                                   onDetail={() => {
+                                        subTitle={"일기 제목"}
+                                        emotion={{name: "기쁨", color: "#FFD600"}}
+                                        symptom="❌"
+                                        content="일기 내용"
+                                        onDetail={() => {
                                        handleGoToWritingDetail()
                                    }}
-                                   onClose={() => setShowPopup(false)}
+                                        onClose={() => setShowPopup(false)}
                             >
-                            </Popup>
+                            </DiaryPopup>
                         )}
                     </div>
                 </Card>
