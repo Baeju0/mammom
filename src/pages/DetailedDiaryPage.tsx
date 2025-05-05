@@ -1,6 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import Card from "../components/Card.tsx";
 import {isLightColor} from "../util/isLightColor.ts";
+import Button from "../components/Button.tsx";
+import Circle from "../components/Circle.tsx";
 
 // 예시 데이터
 const diaryDetail = {
@@ -33,36 +35,23 @@ export default function DetailedDiaryPage() {
             <h1 className="diary-detail-title">{diaryDetail.title}</h1>
 
             <div className="diary-detail-circles">
-                <div className="circle-layout">
-                    <div
-                        className="popup-circle border"
-                        style={{ background: diaryDetail.emotion.color,
-                                borderColor: diaryDetail.emotion.color }}
-                    >
-            <span
-                className="text-xs font-bold"
-                style={{ color: textColor }}
-            >
-              {diaryDetail.emotion.name}
-            </span>
-                    </div>
-                    <span className="popup-circle-text">감정</span>
-                </div>
-                <div className="circle-layout">
-                    <div
-                        className="popup-circle"
-                        style={{ borderColor: diaryDetail.emotion.color }}
-                    >
-                        <span className="text-xl">{diaryDetail.symptom}</span>
-                    </div>
-                    <span className="popup-circle-text">신체 증상</span>
-                </div>
+                <Circle label="감정"
+                        color={diaryDetail.emotion.color}
+                        textColor={textColor}
+                        bordered
+                > {diaryDetail.emotion.name}
+                </Circle>
+                <Circle label="증상"
+                        bordered
+                > {diaryDetail.symptom}
+                </Circle>
             </div>
 
             <div className="diary-detail-content">
                 {diaryDetail.content}
             </div>
         </div>
+            <Button onClick={()=>navigate(`/writing-list/${diaryDetail.id}/edit`)}>수정하기</Button>
         </Card>
     );
 }
