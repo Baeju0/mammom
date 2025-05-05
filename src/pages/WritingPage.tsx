@@ -15,6 +15,7 @@ export default function WritingPage() {
     const [customSymptom, setCustomSymptom] = useState('');
 
     const navigate = useNavigate();
+    const today = new Date();
 
     return(
         <>
@@ -31,18 +32,24 @@ export default function WritingPage() {
                 backable
                 onBack={() => navigate(-1)}
                 className="card-large"
-                >
+            >
+                <div className="mb-2 text-center">
+                    {today.toLocaleDateString("ko-KR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    })}
+                </div>
                 <div className="flex flex-col gap-2 mb-2">
                     <div className="circle mx-auto"
-                        style={{backgroundColor: selectedColor}}
+                         style={{backgroundColor: selectedColor}}
                     ></div>
                     <Input
                         title="일기 제목"
                         placeholder="오늘 하루의 제목을 작성해보세요."/>
-
                     <TextArea
                         title="일기 내용"
-                        placeholder="오늘 하루를 기록해보세요." />
+                        placeholder="오늘 하루를 기록해보세요."/>
                 </div>
             </Card>
             <Card
