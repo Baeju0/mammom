@@ -1,6 +1,7 @@
 import {useState} from "react";
 import { SketchPicker, ColorResult } from 'react-color';
 import Button from "./Button.tsx";
+import {BASED_COLORS} from "../util/colorOption.ts";
 
 interface ColorSelectorProps {
     selectedColor: string;
@@ -16,14 +17,6 @@ export default function ColorSelector({
     setCustomColor,
 }: ColorSelectorProps) {
     const [pickerOpen, setPickerOpen] = useState(false);
-
-    const BASED_COLORS = [
-        {color: "#FFD600", label: "기쁨"},
-        {color: "#2196F3", label: "슬픔"},
-        {color: "#FF1744", label: "화남"},
-        {color: "#9E9E9E", label: "우울"},
-        {color: "#80D8FF", label: "평온"},
-    ];
 
     return (
         <div className="flex gap-5 justify-center">

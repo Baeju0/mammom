@@ -1,4 +1,5 @@
 import Input from "./Input.tsx";
+import {SYMPTOMS} from "../util/symptomOption.ts";
 
 interface SymptomSelectorProps {
     selectedSymptom: string;
@@ -15,35 +16,20 @@ export default function SymptomSelector({
 }: SymptomSelectorProps) {
     const isCustom = selectedSymptom === '기타';
 
-    const SYMPTOMS = [
-        {label:"두통", icon: "🤕"},
-        {label:"복통", icon: "😫"},
-        {label:"피로", icon: "😴"},
-        {label:"근육통", icon: "💪"},
-        {label:"메스꺼움", icon: "🤢"},
-        {label: "어지러움", icon: "😵‍💫"},
-        {label: "불면", icon: "🥱"},
-        {label: "식욕저하", icon: "😑"},
-        {label: "구토", icon: "🤮"},
-        {label: "설사", icon: "😨"},
-        {label: "없음", icon: "❌"},
-        {label: "기타", icon:"🤔"},
-    ];
-
     return (
         <div className="flex flex-col items-center gap-4 mb-3">
             <div className="flex flex-wrap gap-2 justify-center">
-                {SYMPTOMS.map(({ label, icon }) => (
+                {SYMPTOMS.map(({ value, label, icon }) => (
                     <button
-                        key={label}
+                        key={value}
                         type="button"
                         className={`px-4 py-1 rounded-full border flex items-center gap-1
-              ${selectedSymptom === label
+                    ${selectedSymptom === value
                             ? "bg-pink-200 border-pink-400 font-bold"
                             : "bg-white border-gray-300"}`}
                         onClick={() => {
                             setSelectedSymptom?.(label);
-                            if (label !== "기타") {
+                            if (value !== "기타") {
                                 setCustomSymptom?.("");
                             }
                         }}
@@ -65,4 +51,4 @@ export default function SymptomSelector({
             )}
         </div>
     );
-            }
+}
