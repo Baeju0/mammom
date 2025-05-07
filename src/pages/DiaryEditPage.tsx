@@ -23,7 +23,7 @@ import {BASED_COLORS} from "../util/colorOption.ts";
 // };
 
 export default function DiaryEditPage() {
-    const [date, setDate] = useState("2025-05-05");
+    const [date] = useState("2025-05-05");
     const [title, setTitle] = useState("일기 제목임니다.");
     const [emotion, setEmotion] = useState({ color: "#FFD600", label: "기쁨"});
     const [symptom, setSymptom] = useState<string>("");
