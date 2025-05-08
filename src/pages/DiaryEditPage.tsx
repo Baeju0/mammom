@@ -29,7 +29,6 @@ export default function DiaryEditPage() {
     const [symptom, setSymptom] = useState<string>("");
     const [content, setContent] = useState("일기 내용 부분임니다.");
 
-    const [tempSymptom, setTempSymptom] = useState<string>(symptom);
     const [selectedColor, setSelectedColor] = useState(emotion.color);
     const [customColor, setCustomColor] = useState(emotion.color);
     const textColor = isLightColor(selectedColor) ? "#222" : "#fff";
@@ -90,13 +89,13 @@ export default function DiaryEditPage() {
                                     title="신체 증상 선택"
                                     onClose={() => setSymptomSelectorOpen(false)}
                                     onSave={() => {
-                                        setSymptom(tempSymptom);
+                                        setSymptom(symptom);
                                         setSymptomSelectorOpen(false);
                                     }}
                                 >
                                     <SymptomSelector
-                                        selectedSymptom={tempSymptom}
-                                        setSelectedSymptom={setTempSymptom}/>
+                                        selectedSymptom={symptom}
+                                        setSelectedSymptom={setSymptom}/>
                                 </Popup>
                             )}
                 </div>
