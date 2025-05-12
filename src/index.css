@@ -70,6 +70,11 @@
         justify-center w-full;
     }
 
+    /*회원가입*/
+    .sign-up-card {
+        @apply flex flex-col items-center gap-1;
+    }
+
     /*날씨 정보*/
     .weather-info-box {
         @apply col-start-1 row-start-1 flex items-center

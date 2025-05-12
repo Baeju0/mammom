@@ -18,14 +18,25 @@ export default function Header() {
        </span>
         </Link>
 
+
+        {/*회원가입과 로그인 구현 후 삼항연산자로 처리*/}
         <div className="header-nav-box">
+            {/*로그인 하지 않았을 때*/}
             <nav className="header-nav">
-                <p>사용자 이름</p>
-                <Link to="/writing-list" className="side-nav-text">일기 작성 내역</Link>
-                <button className="side-nav-text !text-[#F44268]">
-                    로그아웃
-                </button>
+                <Link to="/login" className="side-nav-text">로그인</Link>
+                <Link to="/sign-up" className="side-nav-text !text-[#D6336C] font-bold">
+                    회원가입
+                </Link>
             </nav>
+
+            {/*로그인 했을 때*/}
+            {/*<nav className="header-nav">*/}
+            {/*    <p>사용자 이름</p>*/}
+            {/*    <Link to="/writing-list" className="side-nav-text">일기 작성 내역</Link>*/}
+            {/*    <button className="side-nav-text !text-[#F44268]">*/}
+            {/*        로그아웃*/}
+            {/*    </button>*/}
+            {/*</nav>*/}
 
 
             {/*모바일 버전에서는 햄버거 메뉴로 표시되도록*/}
