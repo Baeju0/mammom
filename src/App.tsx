@@ -9,6 +9,8 @@ import DataPage from "./pages/DataPage.tsx";
 import DetailedDiaryPage from "./pages/DetailedDiaryPage.tsx";
 import DiaryList from "./pages/DiaryList.tsx";
 import DiaryEditPage from "./pages/DiaryEditPage.tsx";
+import Login from "./pages/Login.tsx";
+import SignUp from "./pages/SignUp.tsx";
 
 function App() {
     return (
@@ -17,6 +19,8 @@ function App() {
             <main className="bg-main">
                 <Routes>
                     <Route path="/" element={<Home/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/sign-up" element={<SignUp/>}/>
                     <Route path="/writing" element={<WritingPage/>}/>
                     <Route path="/activities-detail/:id" element={<RecommendDetailPage/>}/>
                     <Route path="/data-detail" element={<DataPage/>}/>
