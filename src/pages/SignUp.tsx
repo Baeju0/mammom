@@ -34,40 +34,52 @@ export default function SignUp() {
         e.preventDefault();
         if(loading) return;
         setLoading(true);
+        setErr(null);
 
+        // 비밀번호 검증
         if (form.password !== form.passwordConfirm) {
-            return setErr("비밀번호가 일치하지 않습니다.");
+            setErr("비밀번호가 일치하지 않습니다.");
+            setLoading(false);
+            return;
         }
         if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(form.password)) {
-            return setErr("비밀번호는 6자리 이상의 영문자와 숫자가 포함되어야 합니다.");
+            setErr("비밀번호는 6자리 이상의 영문자와 숫자가 포함되어야 합니다.");
+            setLoading(false);
+            return;
         }
 
         // 회원가입
         const authEmail = `${form.username}${DOMAIN}`;
-        const {data, error: supabaseErr} = await supabase.auth.signUp({
+        const {data: signUpData, error: signUpErr} = await supabase.auth.signUp({
             email: authEmail,
             password: form.password,
         });
-        if (supabaseErr) {
-            // console.log("Sign up error", supabaseErr);
-            return setErr(`회원가입 실패: ${supabaseErr.message}`);
+        if (signUpErr || !signUpData.user) {
+            // console.log("Sign up error", signUpErr);
+            setErr(`회원가입 실패: ${signUpErr?.message}`)
+            setLoading(false);
+            return;
         }
 
         // 회원가입 완료 후 자동 로그인
-        const {error: signInError} = await supabase.auth.signInWithPassword({
+        const {data: signInData, error: signInError} = await supabase.auth.signInWithPassword({
             email: authEmail,
             password: form.password,
         });
-        if (signInError) {
-            return setErr("자동 로그인 실패: "+signInError.message);
+        if (signInError || !signInData.user) {
+            setErr("자동 로그인 실패: "+signInError?.message);
+            setLoading(false);
+            return;
         }
 
-        // 회원 정보 저장
+        // profiles 테이블에 회원 정보 저장
         const {error: insertErr} = await supabase
             .from("profiles")
-            .insert({id: data!.user!.id, nickname: form.nickname});
+            .insert({id: signInData!.user!.id, nickname: form.nickname});
         if (insertErr) {
-            return setErr("회원가입 실패: "+insertErr.message);
+            setErr("회원가입 실패: "+insertErr.message);
+            setLoading(false);
+            return;
         }
 
         setLoading(false);
@@ -76,7 +88,7 @@ export default function SignUp() {
 
     return (
         <Card title="맘몸일기 회원가입">
-            <form onSubmit={handleSignup} className="sign-up-card">
+            <form onSubmit={handleSignup} className="sign-card">
 
             <Input placeholder="아이디 (영문·숫자 4자 이상)"
                    type="text"
@@ -112,6 +124,7 @@ export default function SignUp() {
             />
 
             <Button type="submit">회원가입</Button>
+                {loading ? "가입 중 입니다..." : ""}
             </form>
             {err && <p className="text-red-500 mt-2">{err}</p>}
         </Card>

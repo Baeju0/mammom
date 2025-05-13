@@ -71,7 +71,7 @@
     }
 
     /*회원가입*/
-    .sign-up-card {
+    .sign-card {
         @apply flex flex-col items-center gap-1;
     }
 
