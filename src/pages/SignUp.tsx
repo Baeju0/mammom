@@ -78,14 +78,16 @@ export default function SignUp() {
         <Card title="맘몸일기 회원가입">
             <form onSubmit={handleSignup} className="sign-up-card">
 
-            <Input placeholder="아이디"
+            <Input placeholder="아이디 (영문·숫자 4자 이상)"
                    type="text"
                    name="username"
                    required
+                   pattern="[A-Za-z0-9]{4,}"
+                   title="영문자와 숫자만 4자 이상 입력 가능합니다."
                    value={form.username}
                    onChange={handleChange}
             />
-            <Input placeholder="닉네임"
+            <Input placeholder="닉네임 (최대 8자)"
                    type="text"
                    name="nickname"
                    maxLength={8}
@@ -93,7 +95,7 @@ export default function SignUp() {
                    value={form.nickname}
                    onChange={handleChange}
             />
-            <Input placeholder="비밀번호"
+            <Input placeholder="비밀번호 (영문·숫자 6자 이상)"
                    type="password"
                    name="password"
                    minLength={6}
