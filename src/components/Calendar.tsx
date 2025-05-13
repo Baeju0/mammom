@@ -13,7 +13,7 @@ export default function Calendar({
     recordedDate = [],
 }: CalendarProps) {
 
-    console.log("recordedDate:", recordedDate);
+    // console.log("recordedDate:", recordedDate);
 
     return (
         <div className="relative w-full flex justify-center">

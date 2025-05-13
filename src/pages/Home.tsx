@@ -46,7 +46,7 @@ export default function Home() {
                 main: json.weather[0].main,
                 icon: json.weather[0].icon
             });
-            console.log(json);
+            // console.log(json);
         };
         fetchWeather();
     }, [latitude, longitude, API_KEY]);
