@@ -11,8 +11,55 @@ import DiaryList from "./pages/DiaryList.tsx";
 import DiaryEditPage from "./pages/DiaryEditPage.tsx";
 import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
+import {useStore} from "./store/store.ts";
+import {useEffect} from "react";
+import {supabase} from "./util/supabaseClient.ts";
 
 function App() {
+    const setUser = useStore((state) => state.setUser);
+    const setNickname = useStore((state) => state.setNickname);
+
+    // 새로고침 시에도 로그인 유지
+    useEffect(() => {
+        (async () => {
+            const {data} = await supabase.auth.getSession();
+            const user = data.session?.user ?? null;
+            setUser(user);
+
+            if(user) {
+                const {data:profile} = await supabase
+                    .from("profiles")
+                    .select("nickname")
+                    .eq("id", user.id)
+                    .single();
+                setNickname(profile?.nickname ?? "");
+            } else {
+                setNickname("");
+            }
+        })();
+
+
+        // 로그인 상태 변화 감시
+        const {data : listener } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                const user = session?.user ?? null;
+                setUser(user);
+                if (user) {
+                    supabase
+                        .from("profiles")
+                        .select("nickname")
+                        .eq("id", user.id)
+                        .single()
+                        .then(({data}) => setNickname(data?.nickname ?? ""));
+                } else {
+                    setNickname("");
+                }
+            });
+        return () => {
+            listener.subscription.unsubscribe();
+        };
+    }, [setUser, setNickname]);
+
     return (
         <div className="bg-gradient bg-layout font-noto">
             <Header/>

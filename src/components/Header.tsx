@@ -1,10 +1,25 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import {X, Menu} from "lucide-react";
 import {useState} from "react";
+import {useStore} from "../store/store.ts";
+import {supabase} from "../util/supabaseClient.ts";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+    const user = useStore((state) => state.user);
+    const setUser = useStore((state) => state.setUser);
+    const nickname = useStore((state) => state.nickname);
+    const setNickname = useStore((state) => state.setNickname);
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        setUser(null);
+        setNickname("");
+        navigate("/");
+    }
 
     return <header className="header">
         <Link
@@ -19,25 +34,23 @@ export default function Header() {
         </Link>
 
 
-        {/*회원가입과 로그인 구현 후 삼항연산자로 처리*/}
         <div className="header-nav-box">
-            {/*로그인 하지 않았을 때*/}
+            {user === null && nickname === "" ?
             <nav className="header-nav">
                 <Link to="/login" className="side-nav-text">로그인</Link>
                 <Link to="/sign-up" className="side-nav-text !text-[#D6336C] font-bold">
                     회원가입
                 </Link>
             </nav>
-
-            {/*로그인 했을 때*/}
-            {/*<nav className="header-nav">*/}
-            {/*    <p>사용자 이름</p>*/}
-            {/*    <Link to="/writing-list" className="side-nav-text">일기 작성 내역</Link>*/}
-            {/*    <button className="side-nav-text !text-[#F44268]">*/}
-            {/*        로그아웃*/}
-            {/*    </button>*/}
-            {/*</nav>*/}
-
+                :
+            <nav className="header-nav">
+                <p>{nickname}님, 환영해요!</p>
+                <Link to="/writing-list" className="side-nav-text">일기 작성 내역</Link>
+                <button onClick={handleLogout} className="side-nav-text !text-[#F44268]">
+                    로그아웃
+                </button>
+            </nav>
+            }
 
             {/*모바일 버전에서는 햄버거 메뉴로 표시되도록*/}
             <div className="header-hamburger">
@@ -52,7 +65,10 @@ export default function Header() {
                 {isOpen && (
                     <aside className="side-bg">
                         <div className="side-header">
-                            <p className="text-lg font-medium">ㅇㅇ님, 환영해요!</p>
+                            {user ?
+                            <p className="text-lg font-medium">{nickname}님, 환영해요!</p>
+                            : <p className="text-lg font-medium">환영합니다!</p>
+                            }
                             <button
                                 aria-label="메뉴 닫기"
                                 onClick={() => setIsOpen(!isOpen)}
@@ -63,18 +79,28 @@ export default function Header() {
 
                         <nav className="side-nav">
                             <ul className="space-y-3">
-                                <li>
-                                    <Link
-                                        to="/writing-list"
-                                        className="side-nav-menu"
-                                    >
+                              {user ?
+                                <>
+                                  <li>
+                                    <Link to="/writing-list" className="side-nav-menu">
                                         일기 작성 내역
                                     </Link>
-                                </li>
+                                  </li>
+                                </>
+                                  : (
+                                <>
+                                 <li>
+                                   <Link to="/login" className="side-nav-menu">로그인</Link>
+                                 </li>
+                                 <li>
+                                   <Link to="sign-up" className="side-nav-menu">회원가입</Link>
+                                 </li>
+                                </>
+                              )}
                             </ul>
                         </nav>
                         <div className="p-4 border-t">
-                            <button className="side-logout">
+                            <button onClick={handleLogout} className="side-logout">
                                 로그아웃
                             </button>
                         </div>

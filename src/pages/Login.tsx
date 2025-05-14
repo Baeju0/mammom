@@ -4,6 +4,7 @@ import Button from "../components/Button.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {supabase} from "../util/supabaseClient.ts";
+import {useStore} from "../store/store.ts";
 
 const DOMAIN = "@mammom.com";
 
@@ -17,6 +18,9 @@ export default function Login() {
         username: "",
         password: "",
     });
+    const setUser = useStore((state) => state.setUser);
+    const setNickname = useStore((state) => state.setNickname);
+
     const [err, setErr] = useState<string|null>(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -33,14 +37,29 @@ export default function Login() {
         setErr(null);
 
         const authEmail = `${form.username}${DOMAIN}`;
-        const {error: signInError} = await supabase.auth.signInWithPassword({
+        const {data: signInData, error: signInError} = await supabase.auth.signInWithPassword({
             email: authEmail,
             password: form.password,
         });
-        if (signInError) {
-            setErr(`로그인 실패: ${signInError.message}`);
+        if (signInError || !signInData.user) {
+            setErr(`로그인 실패: ${signInError?.message}`);
             setLoading(false);
             return;
+        }
+
+        const user = signInData.user;
+        setUser(user);
+
+        const { data: profile, error: profileError } = await supabase
+            .from("profiles")
+            .select("nickname")
+            .eq("id", user.id)
+            .single();
+        if (profileError) {
+            console.log("닉네임 가져오기 실패!", profileError);
+            setNickname("");
+        } else {
+            setNickname(profile.nickname);
         }
 
         setLoading(false);
