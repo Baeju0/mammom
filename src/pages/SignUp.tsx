@@ -4,6 +4,7 @@ import Card from "../components/Card.tsx";
 import Input from "../components/Input.tsx";
 import Button from "../components/Button.tsx";
 import {useNavigate} from "react-router-dom";
+import {useStore} from "../store/store.ts";
 
 const DOMAIN = "@mammom.com";
 
@@ -21,6 +22,8 @@ export default function SignUp() {
         password: "",
         passwordConfirm: ""
     });
+    const setUser = useStore((state) => state.setUser);
+    const setNickname = useStore((state) => state.setNickname);
     const [err, setErr] = useState<string|null>(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -55,8 +58,15 @@ export default function SignUp() {
             password: form.password,
         });
         if (signUpErr || !signUpData.user) {
-            // console.log("Sign up error", signUpErr);
-            setErr(`회원가입 실패: ${signUpErr?.message}`)
+            console.log("회원가입 에러 디테일", signUpErr);
+            if(signUpErr?.status === 400) {
+                setErr("유효하지 않은 형식입니다.");
+            } else if (signUpErr?.status === 422) {
+                setErr("이미 사용 중인 아이디 입니다.");
+            } else {
+                setErr("회원가입 실패: "+signUpErr?.message);
+            }
+
             setLoading(false);
             return;
         }
@@ -71,6 +81,8 @@ export default function SignUp() {
             setLoading(false);
             return;
         }
+        const user = signInData.user;
+        setUser(user);
 
         // profiles 테이블에 회원 정보 저장
         const {error: insertErr} = await supabase
@@ -82,6 +94,7 @@ export default function SignUp() {
             return;
         }
 
+        setNickname(form.nickname);
         setLoading(false);
         navigate("/", {state: {fromSignup: true}});
     }

@@ -42,7 +42,14 @@ export default function Login() {
             password: form.password,
         });
         if (signInError || !signInData.user) {
-            setErr(`로그인 실패: ${signInError?.message}`);
+            if(signInError?.status === 400) {
+                setErr("아이디 또는 비밀번호가 일치하지 않습니다.");
+            } else if (signInError?.status === 429) {
+                setErr("서버에 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+            } else {
+                setErr("알 수 없는 오류가 발생했습니다.");
+            }
+
             setLoading(false);
             return;
         }

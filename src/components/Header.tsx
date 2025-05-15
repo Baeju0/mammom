@@ -21,6 +21,29 @@ export default function Header() {
         navigate("/");
     }
 
+    const handleGuestLogin = async () => {
+        const {data, error} = await supabase.auth.signInWithPassword({
+            email: "guest@mammom.com",
+            password: "password123",
+        });
+        if (error || !data.user) {
+            console.log("게스트 로그인 실패", error);
+            return;
+        }
+        setUser(data.user);
+
+        const {data: profile, error: profileError} = await supabase
+            .from("profiles")
+            .select("nickname")
+            .eq("id", data.user.id)
+            .single();
+        if (profileError || !profile) {
+            console.log("게스트 로그인 실패", profileError);
+            return;
+        }
+        setNickname(profile.nickname);
+    }
+
     return <header className="header">
         <Link
             to="/"
@@ -41,6 +64,7 @@ export default function Header() {
                 <Link to="/sign-up" className="side-nav-text !text-[#D6336C] font-bold">
                     회원가입
                 </Link>
+                <button onClick={handleGuestLogin} className="text-[#934311]">게스트로 둘러보기</button>
             </nav>
                 :
             <nav className="header-nav">
@@ -90,7 +114,10 @@ export default function Header() {
                                   : (
                                 <>
                                  <li>
-                                   <Link to="/login" className="side-nav-menu">로그인</Link>
+                                     <button onClick={handleGuestLogin} className="text-[#934311]">게스트로 둘러보기</button>
+                                 </li>
+                                    <li>
+                                    <Link to="/login" className="side-nav-menu">로그인</Link>
                                  </li>
                                  <li>
                                    <Link to="sign-up" className="side-nav-menu">회원가입</Link>
