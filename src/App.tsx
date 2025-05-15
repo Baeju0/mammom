@@ -14,6 +14,8 @@ import SignUp from "./pages/SignUp.tsx";
 import {useStore} from "./store/store.ts";
 import {useEffect} from "react";
 import {supabase} from "./util/supabaseClient.ts";
+import RedirectAuth from "./components/RedirectAuth.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 function App() {
     const setUser = useStore((state) => state.setUser);
@@ -66,14 +68,26 @@ function App() {
             <main className="bg-main">
                 <Routes>
                     <Route path="/" element={<Home/>}/>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/sign-up" element={<SignUp/>}/>
+                    <Route path="/login" element={
+                        <RedirectAuth>
+                            <Login/>
+                        </RedirectAuth>
+                        }/>
+                    <Route path="/sign-up" element={
+                        <RedirectAuth>
+                        <SignUp/>
+                        </RedirectAuth>
+                    }/>
+
+                    <Route element={<ProtectedRoute/>}>
                     <Route path="/writing" element={<WritingPage/>}/>
                     <Route path="/activities-detail/:id" element={<RecommendDetailPage/>}/>
                     <Route path="/data-detail" element={<DataPage/>}/>
                     <Route path="/writing-list" element={<DiaryList/>}/>
                     <Route path="/writing-list/:id" element={<DetailedDiaryPage/>}/>
                     <Route path="/writing-list/:id/edit" element={<DiaryEditPage/>}/>
+                    </Route>
+
                 </Routes>
             </main>
                 <Footer/>
