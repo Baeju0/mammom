@@ -49,7 +49,7 @@ export default function Header() {
             to="/"
             aria-label="메인 페이지로 이동"
             className="header-link">
-            <img src={Logo} alt="맘몸일기 로고" className="header-logo"/>
+            <img src={Logo} alt="맘몸일기 로고" className="header-logo w-[120px] h-[40px]"/>
             <span className="header-logo-text">
             맘몸일기
             <p className="base-text !text-xs sm:!text-sm">따뜻한 하루를 시작해요!</p>
