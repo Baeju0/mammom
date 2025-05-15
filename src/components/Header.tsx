@@ -60,17 +60,17 @@ export default function Header() {
         <div className="header-nav-box">
             {user === null && nickname === "" ?
             <nav className="header-nav">
-                <Link to="/login" className="side-nav-text">로그인</Link>
-                <Link to="/sign-up" className="side-nav-text !text-[#D6336C] font-bold">
+                <Link to="/login" className="side-nav-text header-login-text">로그인</Link>
+                <Link to="/sign-up" className="side-nav-text header-sign-up-text">
                     회원가입
                 </Link>
-                <button onClick={handleGuestLogin} className="text-[#934311]">게스트로 둘러보기</button>
+                <button onClick={handleGuestLogin} className="side-nav-text header-guest-text">게스트로 둘러보기</button>
             </nav>
                 :
             <nav className="header-nav">
                 <p>{nickname}님, 환영해요!</p>
-                <Link to="/writing-list" className="side-nav-text">일기 작성 내역</Link>
-                <button onClick={handleLogout} className="side-nav-text !text-[#F44268]">
+                <Link to="/writing-list" className="side-nav-text header-writing-list-text">일기 작성 내역</Link>
+                <button onClick={handleLogout} className="side-nav-text header-logout-text">
                     로그아웃
                 </button>
             </nav>
@@ -90,8 +90,8 @@ export default function Header() {
                     <aside className="side-bg">
                         <div className="side-header">
                             {user ?
-                            <p className="text-lg font-medium">{nickname}님, 환영해요!</p>
-                            : <p className="text-lg font-medium">환영합니다!</p>
+                            <p className="header-mobile-text">{nickname}님, 환영해요!</p>
+                            : <p className="header-mobile-text">환영합니다!</p>
                             }
                             <button
                                 aria-label="메뉴 닫기"
@@ -104,18 +104,19 @@ export default function Header() {
                         <nav className="side-nav">
                             <ul className="space-y-3">
                               {user ?
-                                <>
-                                  <li>
-                                    <Link to="/writing-list" className="side-nav-menu">
-                                        일기 작성 내역
-                                    </Link>
-                                  </li>
-                                </>
+                                  <>
+                                      <li>
+                                          <Link to="/writing-list" className="side-nav-menu header-writing-list-text">
+                                              일기 작성 내역
+                                          </Link>
+                                      </li>
+                                  </>
                                   : (
-                                <>
-                                 <li>
-                                     <button onClick={handleGuestLogin} className="text-[#934311]">게스트로 둘러보기</button>
-                                 </li>
+                                      <>
+                                       <li>
+                                         <button onClick={handleGuestLogin}
+                                                 className="side-nav-menu header-guest-text">게스트로 둘러보기</button>
+                                       </li>
                                     <li>
                                     <Link to="/login" className="side-nav-menu">로그인</Link>
                                  </li>
@@ -126,11 +127,13 @@ export default function Header() {
                               )}
                             </ul>
                         </nav>
+
+                        {user && (
                         <div className="p-4 border-t">
                             <button onClick={handleLogout} className="side-logout">
                                 로그아웃
                             </button>
-                        </div>
+                        </div>)}
                     </aside>
                 )}
             </div>

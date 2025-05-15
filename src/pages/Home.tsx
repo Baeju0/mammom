@@ -51,8 +51,8 @@ export default function Home() {
         fetchWeather();
     }, [latitude, longitude, API_KEY]);
 
-    // 기록한 날짜 예시 데이터, JS는 달이 0부터 시작해서 3이 4월임.
-    const recordedDate = [new Date(2025, 3, 5), new Date(2025, 3, 13), new Date(2025, 4, 10)];
+    // 기록한 날짜 예시 데이터, JS는 달이 0부터 시작해서 0이 1월임.
+    const recordedDate = [new Date(2025, 4, 1), new Date(2025, 4, 3), new Date(2025, 4, 4), new Date(2025, 4, 5), new Date(2025, 4, 7), new Date(2025, 4, 9), new Date(2025, 4, 13), new Date(2025, 4, 14)];
 
     return (
         <div>
