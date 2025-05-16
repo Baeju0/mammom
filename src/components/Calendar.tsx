@@ -3,8 +3,8 @@ import 'react-day-picker/dist/style.css';
 import { ko } from "date-fns/locale"
 
 interface CalendarProps {
-    selected: Date | null;
-    onSelect: (date: Date | undefined) => void;
+    selected?: Date | null;
+    onSelect?: (date: Date | undefined) => void;
     recordedDate?: Date[];
 }
 

@@ -9,6 +9,7 @@ import DiaryPopup from "../components/DiaryPopup.tsx";
 import useUserLocation from "../hooks/useUserLocation.ts";
 import RecommendedActivities from "../components/RecommendedActivities.tsx";
 import DataChart from "../components/DataChart.tsx";
+import {useStore} from "../store/store.ts";
 
 interface Weather {
     temp: number;
@@ -19,6 +20,7 @@ interface Weather {
 export default function Home() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPopup, setShowPopup] = useState(false);
+    const user = useStore((state) => state.user);
 
     function handleGoToWritingDetail() {
         navigate("/writing-list/:id");
@@ -85,7 +87,8 @@ export default function Home() {
                 <Card title="달력"
                       className="calendar-card">
                     <div className="mt-5">
-                        <Calendar
+                        {user ? <>
+                            <Calendar
                             recordedDate={recordedDate}
                             selected={selectedDate}
                             onSelect={(date) => {
@@ -95,23 +98,24 @@ export default function Home() {
                                 );
                             }}
                         />
-                        {showPopup && selectedDate && (
-                            <DiaryPopup title={`${selectedDate.toLocaleDateString('ko-KR', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            })}의 일기`}
-                                        subTitle={"일기 제목"}
-                                        emotion={{name: "기쁨", color: "#FFD600"}}
-                                        symptom="❌"
-                                        content="일기 내용"
-                                        onDetail={() => {
-                                       handleGoToWritingDetail()
-                                   }}
-                                        onClose={() => setShowPopup(false)}
-                            >
-                            </DiaryPopup>
-                        )}
+                            {showPopup && selectedDate && (
+                                <DiaryPopup title={`${selectedDate.toLocaleDateString('ko-KR', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}의 일기`}
+                                            subTitle={"일기 제목"}
+                                            emotion={{name: "기쁨", color: "#FFD600"}}
+                                            symptom="❌"
+                                            content="일기 내용"
+                                            onDetail={() => {
+                                                handleGoToWritingDetail()
+                                            }}
+                                            onClose={() => setShowPopup(false)}
+                                >
+                                </DiaryPopup>
+                            )}</>
+                            : <Calendar/>}
                     </div>
                 </Card>
 
