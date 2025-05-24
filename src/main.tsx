@@ -5,7 +5,6 @@ import {BrowserRouter} from "react-router-dom";
 
 createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
-        <meta name="google-site-verification" content="30yPXbvMkTE7UUtecXENpB8hWRM-x5gqKAtDvFAaSJQ"/>
         <App/>
     </BrowserRouter>
 )
