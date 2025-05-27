@@ -22,6 +22,8 @@ export default function SignUp() {
         password: "",
         passwordConfirm: ""
     });
+    const [locationAgreed, setLocationAgreed] = useState<boolean>(false);
+    const [showPolicy, setShowPolicy] = useState<boolean>(false);
     const setUser = useStore((state) => state.setUser);
     const setNickname = useStore((state) => state.setNickname);
     const [err, setErr] = useState<string|null>(null);
@@ -87,7 +89,11 @@ export default function SignUp() {
         // profiles 테이블에 회원 정보 저장
         const {error: insertErr} = await supabase
             .from("profiles")
-            .insert({id: signInData!.user!.id, nickname: form.nickname});
+            .insert({
+                id: signInData!.user!.id,
+                nickname: form.nickname,
+                location_agreed: locationAgreed
+            });
         if (insertErr) {
             setErr("회원가입 실패: "+insertErr.message);
             setLoading(false);
@@ -135,6 +141,26 @@ export default function SignUp() {
                    value={form.passwordConfirm}
                    onChange={handleChange}
             />
+
+                <div className="mb-3 mt-2">
+                    <label className="location-agree-label">
+                        <input type="checkbox"
+                               checked={locationAgreed}
+                               onChange={()=>setLocationAgreed(!locationAgreed)}
+                               className="accent-blue-500"/>
+                        위치 정보 수집에 동의하면 현재 위치의 날씨를 제공합니다.
+                    </label>
+                    <button type="button"
+                            className="location-agree-label-button"
+                            onClick={()=> setShowPolicy(!showPolicy)}>
+                        {showPolicy ? "닫기" : "더보기"}
+                    </button>
+                    {showPolicy && (
+                        <div className="location-agree-text">
+                        위치 정보는 날씨 제공 목적에만 사용되며, 동의하지 않을 경우 서울 기준으로 날씨가 제공됩니다.<br/>
+                        </div>
+                    )}
+                </div>
 
             <Button type="submit">회원가입</Button>
                 {loading ? "가입 중 입니다..." : ""}

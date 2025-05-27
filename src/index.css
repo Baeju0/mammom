@@ -92,6 +92,15 @@
     .sign-card {
         @apply flex flex-col items-center gap-1;
     }
+    .location-agree-label {
+        @apply flex items-center gap-2 cursor-pointer;
+    }
+    .location-agree-label-button {
+        @apply text-xs text-gray-500 underline ml-6;
+    }
+    .location-agree-text {
+        @apply text-xs text-gray-600 mt-1 ml-6 border rounded p-2 bg-gray-50;
+    }
 
     /*날씨 정보*/
     .weather-info-box {

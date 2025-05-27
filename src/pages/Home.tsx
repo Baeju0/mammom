@@ -10,6 +10,7 @@ import useUserLocation from "../hooks/useUserLocation.ts";
 import RecommendedActivities from "../components/RecommendedActivities.tsx";
 import DataChart from "../components/DataChart.tsx";
 import {useStore} from "../store/store.ts";
+import {supabase} from "../util/supabaseClient.ts";
 
 interface Weather {
     temp: number;
@@ -21,6 +22,8 @@ export default function Home() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPopup, setShowPopup] = useState(false);
     const user = useStore((state) => state.user);
+    const locationAgreed = useStore((state) => state.locationAgreed);
+    const setLocationAgreed = useStore((state) => state.setLocationAgreed);
 
     function handleGoToWritingDetail() {
         navigate("/writing-list/:id");
@@ -31,9 +34,21 @@ export default function Home() {
         navigate("/data-detail");
     }
 
-    const { latitude, longitude } = useUserLocation();
+    const { latitude, longitude } = useUserLocation(!!user && locationAgreed);
     const [weather, setWeather] = useState<Weather | null>(null);
     const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+
+    useEffect(() => {
+        if (!user) return;
+        supabase
+            .from("profiles")
+            .select("location_agreed")
+            .eq("id", user.id)
+            .single()
+            .then(({data}) => {
+                setLocationAgreed(!!data?.location_agreed);
+            });
+    }, [user, setLocationAgreed]);
 
     useEffect(() => {
         if (latitude == null || longitude == null) return;
