@@ -21,6 +21,9 @@ function App() {
     const setUser = useStore((state) => state.setUser);
     const setNickname = useStore((state) => state.setNickname);
 
+    const fetchBaseData = useStore((state) => state.fetchBaseData);
+    const baseDataLoading = useStore((state) => state.baseDataLoading);
+
     // 새로고침 시에도 로그인 유지
     useEffect(() => {
         (async () => {
@@ -61,6 +64,17 @@ function App() {
             listener.subscription.unsubscribe();
         };
     }, [setUser, setNickname]);
+
+    useEffect(() => {
+        const {emotionColors} = useStore.getState();
+        if (emotionColors.length === 0) {
+            void fetchBaseData();
+        }
+    }, [fetchBaseData]);
+
+    if (baseDataLoading) {
+        return <div className="h-screen flex items-center justify-center">기본 데이터 로딩중입니다...</div>
+    }
 
     return (
         <div className="bg-gradient bg-layout font-noto">
