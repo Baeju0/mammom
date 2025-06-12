@@ -1,9 +1,15 @@
 import {useState} from "react";
 import { SketchPicker, ColorResult } from 'react-color';
 import Button from "./Button.tsx";
-import {BASED_COLORS} from "../util/colorOption.ts";
+
+export interface EmotionColor {
+    id: number;
+    name: string;
+    hex_code: string;
+}
 
 interface ColorSelectorProps {
+    emotionColors: EmotionColor[];
     selectedColor: string;
     setSelectedColor: (color: string) => void;
     customColor: string;
@@ -11,6 +17,7 @@ interface ColorSelectorProps {
 }
 
 export default function ColorSelector({
+    emotionColors,
     selectedColor,
     setSelectedColor,
     customColor,
@@ -20,20 +27,21 @@ export default function ColorSelector({
 
     return (
         <div className="flex gap-5 justify-center">
-            {BASED_COLORS.map(({color, label}, i) => (
-                <div key={i} className="circle-layout">
+            {emotionColors.map((color) => (
+                <div key={color.id} className="circle-layout">
                     <div
-                        className={`circle ${selectedColor === color ? 'picked-color' : ''}`}
-                        style={{backgroundColor: color}}
-                        onClick={()=>{setSelectedColor(color)}}
+                        className={`circle ${selectedColor === color.hex_code ? "picked-color" : ""}`}
+                        style={{backgroundColor: color.hex_code}}
+                        onClick={()=>{setSelectedColor(color.hex_code)}}
                     />
-                    <span className="circle-text">{label}</span>
+                    <span className="circle-text">{color.name}</span>
                 </div>
             ))}
 
             <div className="circle-layout">
                 <div
-                    className="circle"
+                    className={`circle ${!emotionColors.some((color) => color.hex_code === selectedColor) && !pickerOpen
+                     ? "picked-color" : ""}`}
                     style={{background: customColor}}
                     onClick={() => setPickerOpen(true)}
                 />

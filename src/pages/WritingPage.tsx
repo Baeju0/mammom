@@ -6,13 +6,16 @@ import Input from "../components/Input.tsx";
 import TextArea from "../components/TextArea.tsx";
 import Button from "../components/Button.tsx";
 import SymptomSelector from "../components/SymptomSelector.tsx";
+import {useStore} from "../store/store.ts";
 
 export default function WritingPage() {
-    const [selectedColor, setSelectedColor] = useState('#000000');
-    const [customColor, setCustomColor] = useState('#000000');
+    const emotionColors = useStore((state) => state.emotionColors);
+    const symptoms = useStore((state) => state.symptoms);
 
-    const [selectedSymptom, setSelectedSymptom] = useState('');
-    const [customSymptom, setCustomSymptom] = useState('');
+    const [selectedColor, setSelectedColor] = useState<string>("");
+    const [customColor, setCustomColor] = useState<string>("#000000");
+    const [selectedSymptom, setSelectedSymptom] = useState<string>("");
+    const [customSymptom, setCustomSymptom] = useState<string>("");
 
     const navigate = useNavigate();
     const today = new Date();
@@ -21,10 +24,11 @@ export default function WritingPage() {
         <>
         <div className="w-full flex justify-center px-2">오늘의 감정</div>
             <ColorSelector
-                customColor={customColor}
-                setCustomColor={setCustomColor}
+                emotionColors={emotionColors}
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
+                customColor={customColor}
+                setCustomColor={setCustomColor}
             />
 
             <Card
@@ -56,6 +60,7 @@ export default function WritingPage() {
                 title="오늘의 신체 증상"
                 className="card-large">
                 <SymptomSelector
+                    symptoms={symptoms}
                     selectedSymptom={selectedSymptom}
                     setSelectedSymptom={setSelectedSymptom}
                     customSymptom={customSymptom}
