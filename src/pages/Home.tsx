@@ -19,6 +19,8 @@ interface Weather {
 }
 
 export default function Home() {
+    const [recordedDates, setRecordedDates] = useState<Date[]>([]);
+
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPopup, setShowPopup] = useState(false);
     const user = useStore((state) => state.user);
@@ -38,6 +40,31 @@ export default function Home() {
     const [weather, setWeather] = useState<Weather | null>(null);
     const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
+    // 일기 날짜 조회
+    useEffect(() => {
+        if (!user) return;
+
+        (async () => {
+            const {data, error} = await supabase
+                .from("diary_entry")
+                .select("entry_date")
+                .eq("profile_id", user.id);
+
+            if (error) {
+                console.log("일기 날짜 조회 실패: ", error);
+                return;
+            }
+
+            const dates = (data || [])
+                .map((row) => row.entry_date)
+                .filter((date): date is string => typeof date === "string")
+                .map((date) => new Date(date));
+
+            setRecordedDates(dates);
+        })();
+    })
+
+    // 위치 정보 동의한 유저인지 확인
     useEffect(() => {
         if (!user) return;
         supabase
@@ -67,9 +94,6 @@ export default function Home() {
         };
         fetchWeather();
     }, [latitude, longitude, API_KEY]);
-
-    // 기록한 날짜 예시 데이터, JS는 달이 0부터 시작해서 0이 1월임.
-    const recordedDate = [new Date(2025, 4, 1), new Date(2025, 4, 3), new Date(2025, 4, 4), new Date(2025, 4, 5), new Date(2025, 4, 7), new Date(2025, 4, 9), new Date(2025, 4, 13), new Date(2025, 4, 14)];
 
     return (
         <div>
@@ -104,12 +128,12 @@ export default function Home() {
                     <div className="mt-5">
                         {user ? <>
                             <Calendar
-                            recordedDate={recordedDate}
-                            selected={selectedDate}
-                            onSelect={(date) => {
-                                setSelectedDate(date ?? null);
-                                setShowPopup(
-                                    !!date && recordedDate.some(d => d && isSameDay(d, date))
+                                recordedDate={recordedDates}
+                                selected={selectedDate}
+                                onSelect={(date) => {
+                                    setSelectedDate(date ?? null);
+                                    setShowPopup(
+                                        !!date && recordedDates.some(d => d && isSameDay(d, date))
                                 );
                             }}
                         />
