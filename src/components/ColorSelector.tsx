@@ -12,18 +12,15 @@ interface ColorSelectorProps {
     emotionColors: EmotionColor[];
     selectedColor: string;
     setSelectedColor: (color: string) => void;
-    customColor: string;
-    setCustomColor: (color: string) => void;
 }
 
 export default function ColorSelector({
     emotionColors,
     selectedColor,
     setSelectedColor,
-    customColor,
-    setCustomColor,
 }: ColorSelectorProps) {
     const [pickerOpen, setPickerOpen] = useState(false);
+    const isCustomColor = !emotionColors.some((color) => color.hex_code === selectedColor);
 
     return (
         <div className="flex gap-5 justify-center">
@@ -40,23 +37,20 @@ export default function ColorSelector({
 
             <div className="circle-layout">
                 <div
-                    className={`circle ${!emotionColors.some((color) => color.hex_code === selectedColor) && !pickerOpen
-                     ? "picked-color" : ""}`}
-                    style={{background: customColor}}
+                    className={`circle ${isCustomColor && !pickerOpen ? "picked-color" : ""}`}
+                    style={{background: isCustomColor ? selectedColor : "#FFFFFF"}}
                     onClick={() => setPickerOpen(true)}
                 />
                 <span className="circle-text">기타</span>
                 {pickerOpen && (
                     <div className="color-palette">
                         <SketchPicker
-                            color={customColor}
-                            onChange={(color: ColorResult) => setCustomColor(color.hex)}
+                            color={selectedColor || "#000000"}
+                            onChange={(color: ColorResult) => setSelectedColor(color.hex)}
                         />
                         <div className="flex flex-row justify-center gap-2 mt-2">
                             <Button
-                                onClick={() => {
-                                        setSelectedColor(customColor);
-                                        setPickerOpen(false)}}>
+                                onClick={() => {setPickerOpen(false)}}>
                                 완료
                             </Button>
                             <Button

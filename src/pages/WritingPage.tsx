@@ -7,7 +7,7 @@ import TextArea from "../components/TextArea.tsx";
 import Button from "../components/Button.tsx";
 import SymptomSelector from "../components/SymptomSelector.tsx";
 import {useStore} from "../store/store.ts";
-import DiaryEntryPayload from "../types/diary.ts";
+import {DiaryEntryInsert} from "../types/diary.ts";
 import {supabase} from "../util/supabaseClient.ts";
 
 export default function WritingPage() {
@@ -19,7 +19,6 @@ export default function WritingPage() {
     const user = useStore((state) => state.user);
 
     const [selectedColor, setSelectedColor] = useState<string>("");
-    const [customColor, setCustomColor] = useState<string>("#000000");
     const [selectedSymptom, setSelectedSymptom] = useState<string>("");
     const [customSymptom, setCustomSymptom] = useState<string>("");
 
@@ -32,15 +31,35 @@ export default function WritingPage() {
             return;
         }
 
+        if (title.trim().length < 3) {
+            alert("일기 제목은 최소 3자 이상 작성해주세요!");
+            return;
+        }
+
+        if (content.trim().length < 10) {
+            alert("일기 내용은 최소 10자 이상 작성해주세요!");
+            return;
+        }
+
         const matchedEmotion = emotionColors.find((color) => color.hex_code === selectedColor);
         const matchedSymptom = symptoms.find((symptom) => symptom.name === selectedSymptom);
 
-        const payload: DiaryEntryPayload = {
+        if (!selectedColor) {
+            alert("오늘의 감정 색상 또는 커스텀 색상을 하나 선택해주세요!");
+            return;
+        }
+
+        if (!matchedSymptom && !customSymptom) {
+            alert("오늘의 신체 증상 또는 직접 입력한 증상을 기록해주세요!");
+            return;
+        }
+
+        const payload: DiaryEntryInsert = {
             title,
             content,
             entry_date: today.toISOString().split("T")[0],
             profile_id: user!.id,
-            ...(matchedEmotion ? {emotion_color_id: matchedEmotion.id} : {custom_emotion_color: customColor}),
+            ...(matchedEmotion ? {emotion_color_id: matchedEmotion.id} : {custom_emotion_color: selectedColor}),
             ...(matchedSymptom ? {symptom_id: matchedSymptom.id} : {custom_symptom: customSymptom}),
         };
         const {error} = await supabase
@@ -61,8 +80,6 @@ export default function WritingPage() {
                 emotionColors={emotionColors}
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
-                customColor={customColor}
-                setCustomColor={setCustomColor}
             />
 
             {/*TODO: 오늘 일기를 작성한 상태라면, 일기 작성 버튼을 비활성화 또는 "오늘은 이미 작성하셨어요!"를 표시하기!*/}
@@ -85,13 +102,13 @@ export default function WritingPage() {
                     ></div>
                     <Input
                         title="일기 제목"
-                        placeholder="오늘 하루의 제목을 작성해보세요."
+                        placeholder="오늘 하루의 제목을 작성해보세요. (최소 3자 이상)"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
                     <TextArea
                         title="일기 내용"
-                        placeholder="오늘 하루를 기록해보세요."
+                        placeholder="오늘 하루를 기록해보세요. (최소 10자 이상)"
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                     />
