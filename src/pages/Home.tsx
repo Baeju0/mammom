@@ -4,13 +4,14 @@ import {ArrowRight, NotebookPen} from "lucide-react";
 import {Link, useNavigate} from "react-router-dom";
 import Calendar from "../components/Calendar.tsx";
 import {useEffect, useState} from "react";
-import {isSameDay} from "date-fns";
+import {format} from "date-fns";
 import DiaryPopup from "../components/DiaryPopup.tsx";
 import useUserLocation from "../hooks/useUserLocation.ts";
 import RecommendedActivities from "../components/RecommendedActivities.tsx";
 import DataChart from "../components/DataChart.tsx";
 import {useStore} from "../store/store.ts";
 import {supabase} from "../util/supabaseClient.ts";
+import {DiaryEntry} from "../types/diary.ts";
 
 interface Weather {
     temp: number;
@@ -19,11 +20,12 @@ interface Weather {
 }
 
 export default function Home() {
+    const user = useStore((state) => state.user);
     const [recordedDates, setRecordedDates] = useState<Date[]>([]);
+    const [dailyEntry, setDailyEntry] = useState<DiaryEntry | null>(null);
 
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showPopup, setShowPopup] = useState(false);
-    const user = useStore((state) => state.user);
     const locationAgreed = useStore((state) => state.locationAgreed);
     const setLocationAgreed = useStore((state) => state.setLocationAgreed);
 
@@ -39,30 +41,6 @@ export default function Home() {
     const { latitude, longitude } = useUserLocation(!!user && locationAgreed);
     const [weather, setWeather] = useState<Weather | null>(null);
     const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-
-    // 일기 날짜 조회
-    useEffect(() => {
-        if (!user) return;
-
-        (async () => {
-            const {data, error} = await supabase
-                .from("diary_entry")
-                .select("entry_date")
-                .eq("profile_id", user.id);
-
-            if (error) {
-                console.log("일기 날짜 조회 실패: ", error);
-                return;
-            }
-
-            const dates = (data || [])
-                .map((row) => row.entry_date)
-                .filter((date): date is string => typeof date === "string")
-                .map((date) => new Date(date));
-
-            setRecordedDates(dates);
-        })();
-    })
 
     // 위치 정보 동의한 유저인지 확인
     useEffect(() => {
@@ -94,6 +72,60 @@ export default function Home() {
         };
         fetchWeather();
     }, [latitude, longitude, API_KEY]);
+
+    // 일기 작성된 날짜 조회
+    useEffect(() => {
+        if (!user) return;
+
+        (async () => {
+            const {data, error} = await supabase
+                .from("diary_entry")
+                .select("entry_date")
+                .eq("profile_id", user.id);
+
+            if (error) {
+                console.log("일기 날짜 조회 실패: ", error);
+                return;
+            }
+
+            const dates = (data || [])
+                .map((row) => row.entry_date)
+                .filter((date): date is string => typeof date === "string")
+                .map((date) => new Date(date));
+
+            setRecordedDates(dates);
+        })();
+    }, [user]);
+
+    // 기록된 날짜 중 선택한 날짜의 일기 팝업 표시
+    useEffect(() => {
+        if (!user || !selectedDate) {
+            setDailyEntry(null);
+            return;
+        }
+
+        setDailyEntry(null);
+        (async () => {
+            const selectedDateStr = format(selectedDate, "yyyy-MM-dd");
+            const {data, error} = await supabase
+                .from("diary_entry")
+                .select(`id, title, content,
+                         entry_date, emotion_color_id, symptom_id,
+                         custom_emotion_color, custom_symptom, profile_id`)
+                .eq("profile_id", user.id)
+                .eq("entry_date", selectedDateStr)
+                .maybeSingle();
+
+            if (error) {
+                console.log("일기 조회 실패: ", error);
+            }
+            setDailyEntry(data || null);
+        })();
+    }, [user, selectedDate]);
+
+    useEffect(() => {
+        setShowPopup(!!dailyEntry);
+    }, [dailyEntry]);
 
     return (
         <div>
@@ -132,24 +164,27 @@ export default function Home() {
                                 selected={selectedDate}
                                 onSelect={(date) => {
                                     setSelectedDate(date ?? null);
-                                    setShowPopup(
-                                        !!date && recordedDates.some(d => d && isSameDay(d, date))
-                                );
                             }}
                         />
-                            {showPopup && selectedDate && (
-                                <DiaryPopup title={`${selectedDate.toLocaleDateString('ko-KR', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}의 일기`}
-                                            subTitle={"일기 제목"}
-                                            emotion={{name: "기쁨", color: "#FFD600"}}
-                                            symptom="❌"
-                                            content="일기 내용"
-                                            onDetail={() => {
-                                                handleGoToWritingDetail()
-                                            }}
+                            {showPopup && selectedDate && dailyEntry && (
+                                <DiaryPopup
+                                    title={dailyEntry.title}
+                                    subTitle={format(selectedDate, 'yyyy년 MM월 dd일의 일기')}
+                                            emotion={{
+                                                      name: dailyEntry.custom_emotion_color
+                                                            ? "기타"
+                                                            : useStore.getState().emotionColors.find(
+                                                                (color) => color.id === dailyEntry?.emotion_color_id)?.name || "기본 감정",
+                                                      hex_code: dailyEntry.custom_emotion_color
+                                                                ? dailyEntry.custom_emotion_color
+                                                                : useStore.getState().emotionColors.find(
+                                                                    (color) => color.id === dailyEntry?.emotion_color_id)?.hex_code || "#000000"
+                                                     }}
+                                            symptom={dailyEntry.custom_symptom ||
+                                                         useStore.getState().symptoms.find(
+                                                            (symptom) => symptom.id === dailyEntry?.symptom_id)?.emoji || "🫥"}
+                                            content={dailyEntry.content}
+                                            onDetail={handleGoToWritingDetail}
                                             onClose={() => setShowPopup(false)}
                                 >
                                 </DiaryPopup>

@@ -3,9 +3,9 @@ import {HTMLAttributes} from "react";
 import Button from "./Button.tsx";
 
 interface DiaryPopupProps extends HTMLAttributes<HTMLDivElement>{
-    title: string
-    subTitle: string
-    emotion: { name: string, color: string }
+    title: string;
+    subTitle: string;
+    emotion: { name: string, hex_code: string }
     symptom: string;
     content: string;
     onDetail: () => void;
@@ -41,7 +41,7 @@ export default function DiaryPopup({
                     <div className="flex flex-col items-center">
                         <div
                             className="popup-circle"
-                            style={{ background: emotion.color, borderColor: emotion.color }}
+                            style={{ background: emotion.hex_code, borderColor: emotion.hex_code }}
                         >
                             <span className="popup-emotion-text" style={{ color: '#9F1139' }}>{emotion.name}</span>
                         </div>
@@ -51,7 +51,7 @@ export default function DiaryPopup({
                     <div className="flex flex-col">
                         <div
                             className="popup-circle"
-                            style={{ borderColor: emotion.color }}
+                            style={{ borderColor: emotion.hex_code }}
                         >
                             <span className="text-2xl">{symptom}</span>
                         </div>
