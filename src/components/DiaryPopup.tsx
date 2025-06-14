@@ -1,6 +1,7 @@
 import {X} from "lucide-react";
 import {HTMLAttributes} from "react";
 import Button from "./Button.tsx";
+import {isLightColor} from "../util/isLightColor.ts";
 
 interface DiaryPopupProps extends HTMLAttributes<HTMLDivElement>{
     title: string;
@@ -23,6 +24,8 @@ export default function DiaryPopup({
     onClose,
     ...rest
 }: DiaryPopupProps) {
+    const textColor = isLightColor(emotion.hex_code) ? "#2E2E2E" : "#F5F5F5";
+
     return (
         <div {...rest} className={`popup ${className}`}>
             <div className="popup-content">
@@ -43,7 +46,9 @@ export default function DiaryPopup({
                             className="popup-circle"
                             style={{ background: emotion.hex_code, borderColor: emotion.hex_code }}
                         >
-                            <span className="popup-emotion-text" style={{ color: '#9F1139' }}>{emotion.name}</span>
+                            <span className="popup-emotion-text" style={{ color: textColor }}>
+                                {emotion.name}
+                            </span>
                         </div>
                         <span className="popup-circle-text">감정</span>
                     </div>
