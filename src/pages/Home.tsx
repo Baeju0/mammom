@@ -12,6 +12,7 @@ import DataChart from "../components/DataChart.tsx";
 import {useStore} from "../store/store.ts";
 import {supabase} from "../util/supabaseClient.ts";
 import {DiaryEntry} from "../types/diary.ts";
+import {getEmotionSymptomEntry} from "../util/getEmotionSymptomEntry.ts";
 
 interface Weather {
     temp: number;
@@ -20,6 +21,8 @@ interface Weather {
 }
 
 export default function Home() {
+    const {emotionColors, symptoms} = useStore.getState();
+
     const user = useStore((state) => state.user);
     const [recordedDates, setRecordedDates] = useState<Date[]>([]);
     const [dailyEntry, setDailyEntry] = useState<DiaryEntry | null>(null);
@@ -29,8 +32,8 @@ export default function Home() {
     const locationAgreed = useStore((state) => state.locationAgreed);
     const setLocationAgreed = useStore((state) => state.setLocationAgreed);
 
-    function handleGoToWritingDetail() {
-        navigate("/writing-list/:id");
+    function handleGoToWritingDetail(id: number) {
+        navigate(`/writing-list/${id}`);
     }
 
     const navigate = useNavigate();
@@ -170,22 +173,11 @@ export default function Home() {
                                 <DiaryPopup
                                     title={dailyEntry.title}
                                     subTitle={format(selectedDate, 'yyyy년 MM월 dd일의 일기')}
-                                            emotion={{
-                                                      name: dailyEntry.custom_emotion_color
-                                                            ? "기타"
-                                                            : useStore.getState().emotionColors.find(
-                                                                (color) => color.id === dailyEntry?.emotion_color_id)?.name || "기본 감정",
-                                                      hex_code: dailyEntry.custom_emotion_color
-                                                                ? dailyEntry.custom_emotion_color
-                                                                : useStore.getState().emotionColors.find(
-                                                                    (color) => color.id === dailyEntry?.emotion_color_id)?.hex_code || "#000000"
-                                                     }}
-                                            symptom={dailyEntry.custom_symptom ||
-                                                         useStore.getState().symptoms.find(
-                                                            (symptom) => symptom.id === dailyEntry?.symptom_id)?.emoji || "🫥"}
-                                            content={dailyEntry.content}
-                                            onDetail={handleGoToWritingDetail}
-                                            onClose={() => setShowPopup(false)}
+                                    emotion={getEmotionSymptomEntry(dailyEntry, emotionColors, symptoms).emotion}
+                                    symptom={getEmotionSymptomEntry(dailyEntry, emotionColors, symptoms).symptom}
+                                    content={dailyEntry.content}
+                                    onDetail={() => handleGoToWritingDetail(dailyEntry.id)}
+                                    onClose={() => setShowPopup(false)}
                                 >
                                 </DiaryPopup>
                             )}</>

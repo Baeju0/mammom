@@ -2,13 +2,13 @@ import {create} from "zustand";
 import {User} from "@supabase/supabase-js";
 import {supabase} from "../util/supabaseClient";
 
-interface EmotionColor {
+export interface EmotionColor {
     id: number;
     name: string;
     hex_code: string;
 }
 
-interface Symptom {
+export interface Symptom {
     id: number;
     name: string;
     emoji: string;
