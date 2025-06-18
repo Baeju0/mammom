@@ -156,8 +156,8 @@
 
     /*일기 상세&수정 페이지*/
     .diary-detail-container {
-        @apply max-w-full sm:max-w-xl mx-auto
-        px-2 sm:px-4 sm:p-6;
+        @apply max-w-full sm:max-w-xl mx-0
+        px-2 sm:px-4 py-2 sm:py-3;
     }
     .diary-detail-content {
         @apply bg-[#FFF6F0] rounded-lg p-8
