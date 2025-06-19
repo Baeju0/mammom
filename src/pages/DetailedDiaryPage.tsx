@@ -48,7 +48,7 @@ export default function DetailedDiaryPage() {
         useStore.getState().symptoms
     );
 
-    const textColor = isLightColor(emotion.hex_code) ? "#2E2E2E" : "#FFFFFF";
+    const textColor = isLightColor(emotion.hex_code) ? "#222" : "#fff";
 
     return (
         <Card backable onBack={() => navigate(-1)}>
@@ -71,8 +71,12 @@ export default function DetailedDiaryPage() {
                     </Circle>
                     <Circle label="증상"
                             bordered
-                    > {symptom}
+                    > {symptom.emoji}
                     </Circle>
+                    {entry?.custom_symptom && (
+                        <span className="custom-symptom-box">
+                            {entry?.custom_symptom ? `기타 증상: ${entry?.custom_symptom}` : `증상: ${symptom.name}`}</span>
+                    )}
                 </div>
 
                 <div className="diary-detail-content">

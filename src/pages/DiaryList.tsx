@@ -29,7 +29,7 @@ export default function DiaryList() {
             <h2 className="text-2xl font-bold mb-4">일기 작성 내역</h2>
             <ul className="space-y-4">
                 {diaryList.map((diary) => {
-                    const textColor = isLightColor(diary.emotion.color) ? "#222222" : "#FFFFFF";
+                    const textColor = isLightColor(diary.emotion.color) ? "#222" : "#fff";
                     return (
                         <li
                             key={diary.id}

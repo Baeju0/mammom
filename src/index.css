@@ -183,6 +183,12 @@
     .edit-btn {
         @apply flex justify-center gap-10;
     }
+    .custom-symptom-box {
+        @apply whitespace-nowrap text-xs
+        text-gray-500 bg-white px-2
+        py-0.5 rounded-full border
+        border-gray-200 shadow-sm;
+    }
 
     /*폰트*/
     .font-noto {

@@ -1,13 +1,9 @@
 import Input from "./Input.tsx";
 
-export interface Symptoms {
-    id : number;
-    name : string;
-    emoji : string;
-}
+import {Symptom} from "../store/store.ts";
 
 interface SymptomSelectorProps {
-    symptoms: Symptoms[];
+    symptoms: Symptom[];
     selectedSymptom: string;
     setSelectedSymptom: (symptoms: string) => void;
     customSymptom?: string;
@@ -31,11 +27,11 @@ export default function SymptomSelector({
                         key={symptom.id}
                         type="button"
                         className={`px-4 py-1 rounded-full border flex items-center gap-1
-                    ${selectedSymptom === symptom.name
+                    ${selectedSymptom === symptom.emoji
                             ? "bg-pink-200 border-pink-400 font-bold"
                             : "bg-white border-gray-300"}`}
                         onClick={() => {
-                            setSelectedSymptom?.(symptom.name);
+                            setSelectedSymptom?.(symptom.emoji);
                             setCustomSymptom?.("");
                         }}
                     >

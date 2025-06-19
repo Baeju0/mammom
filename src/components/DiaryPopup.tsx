@@ -7,7 +7,7 @@ interface DiaryPopupProps extends HTMLAttributes<HTMLDivElement>{
     title: string;
     subTitle: string;
     emotion: { name: string, hex_code: string }
-    symptom: string;
+    symptom: { name: string, emoji: string } | string
     content: string;
     onDetail: () => void;
     onClose: () => void;
@@ -24,7 +24,7 @@ export default function DiaryPopup({
     onClose,
     ...rest
 }: DiaryPopupProps) {
-    const textColor = isLightColor(emotion.hex_code) ? "#2E2E2E" : "#F5F5F5";
+    const textColor = isLightColor(emotion.hex_code) ? "#222" : "#fff";
 
     return (
         <div {...rest} className={`popup ${className}`}>
@@ -58,7 +58,9 @@ export default function DiaryPopup({
                             className="popup-circle"
                             style={{ borderColor: emotion.hex_code }}
                         >
-                            <span className="text-2xl">{symptom}</span>
+                            <span className="text-2xl">
+                                {typeof symptom === "string" ? symptom : symptom.emoji}
+                            </span>
                         </div>
                         <span className="popup-circle-text">신체 증상</span>
                     </div>
