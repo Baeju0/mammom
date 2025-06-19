@@ -42,7 +42,7 @@ export default function WritingPage() {
         }
 
         const matchedEmotion = emotionColors.find((color) => color.hex_code === selectedColor);
-        const matchedSymptom = symptoms.find((symptom) => symptom.name === selectedSymptom);
+        const matchedSymptom = symptoms.find((symptom) => symptom.emoji === selectedSymptom);
 
         if (!selectedColor) {
             alert("오늘의 감정 색상 또는 커스텀 색상을 하나 선택해주세요!");
@@ -54,14 +54,34 @@ export default function WritingPage() {
             return;
         }
 
+        if (selectedSymptom === "기타" && !customSymptom.trim()) {
+            alert("기타 증상을 입력해주세요!");
+            return;
+        }
+
         const payload: DiaryEntryInsert = {
             title,
             content,
             entry_date: today.toISOString().split("T")[0],
             profile_id: user!.id,
-            ...(matchedEmotion ? {emotion_color_id: matchedEmotion.id} : {custom_emotion_color: selectedColor}),
-            ...(matchedSymptom ? {symptom_id: matchedSymptom.id} : {custom_symptom: customSymptom}),
+            emotion_color_id: null,
+            symptom_id: null,
+            custom_emotion_color: null,
+            custom_symptom: null
         };
+
+        if (matchedEmotion) {
+            payload.emotion_color_id = matchedEmotion.id;
+        } else {
+            payload.custom_emotion_color = selectedColor;
+        }
+
+        if (matchedSymptom) {
+            payload.symptom_id = matchedSymptom.id;
+        } else {
+            payload.custom_symptom = customSymptom;
+        }
+
         const {error} = await supabase
             .from("diary_entry")
             .insert(payload);
@@ -82,7 +102,6 @@ export default function WritingPage() {
                 setSelectedColor={setSelectedColor}
             />
 
-            {/*TODO: 오늘 일기를 작성한 상태라면, 일기 작성 버튼을 비활성화 또는 "오늘은 이미 작성하셨어요!"를 표시하기!*/}
             <Card
                 title="오늘의 일기 (하루 1회 작성)"
                 backable
