@@ -42,6 +42,23 @@ export default function DetailedDiaryPage() {
     if (loading) return <div>로딩 중.....</div>;
     if (!entry) return <div>오잉!? 일기를 찾을 수 없습니다!</div>
 
+    const handleDelete = async () => {
+        if (!entry) return;
+        if (!window.confirm("정말 이 일기를 삭제하시겠습니까?")) return;
+
+        const {error} = await supabase
+            .from("diary_entry")
+            .delete()
+            .eq("id", entry.id);
+        if (error) {
+            alert("일기 삭제 실패!");
+            console.log("일기 삭제 실패!", error);
+        } else {
+            alert("일기 삭제 성공!");
+            navigate("/");
+        }
+    }
+
     const {emotion, symptom} = getEmotionSymptomEntry(
         entry,
         useStore.getState().emotionColors,
@@ -88,7 +105,7 @@ export default function DetailedDiaryPage() {
                     <Button onClick={() => navigate(`/writing-list/${entry.id}/edit`)}>
                         수정하기
                     </Button>
-                    <Button className="!bg-red-100 !text-red-500">
+                    <Button className="!bg-red-100 !text-red-500" onClick={handleDelete}>
                         삭제
                     </Button>
                 </div>
