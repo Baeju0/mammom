@@ -19,7 +19,7 @@ export default function WritingPage() {
     const user = useStore((state) => state.user);
 
     const [selectedColor, setSelectedColor] = useState<string>("");
-    const [selectedSymptom, setSelectedSymptom] = useState<string>("");
+    const [selectedSymptomId, setSelectedSymptomId] = useState<number | null>(null);
     const [customSymptom, setCustomSymptom] = useState<string>("");
 
     const [title, setTitle] = useState<string>("");
@@ -42,7 +42,7 @@ export default function WritingPage() {
         }
 
         const matchedEmotion = emotionColors.find((color) => color.hex_code === selectedColor);
-        const matchedSymptom = symptoms.find((symptom) => symptom.emoji === selectedSymptom);
+        const matchedSymptom = symptoms.find((symptom) => symptom.id === selectedSymptomId);
 
         if (!selectedColor) {
             alert("오늘의 감정 색상 또는 커스텀 색상을 하나 선택해주세요!");
@@ -54,7 +54,7 @@ export default function WritingPage() {
             return;
         }
 
-        if (selectedSymptom === "기타" && !customSymptom.trim()) {
+        if (selectedSymptomId === null && !customSymptom.trim()) {
             alert("기타 증상을 입력해주세요!");
             return;
         }
@@ -138,8 +138,8 @@ export default function WritingPage() {
                 className="card-large">
                 <SymptomSelector
                     symptoms={symptoms}
-                    selectedSymptom={selectedSymptom}
-                    setSelectedSymptom={setSelectedSymptom}
+                    selectedSymptomId={selectedSymptomId}
+                    setSelectedSymptomId={setSelectedSymptomId}
                     customSymptom={customSymptom}
                     setCustomSymptom={setCustomSymptom}
                 />

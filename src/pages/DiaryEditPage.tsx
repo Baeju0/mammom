@@ -11,7 +11,6 @@ import Popup from "../components/Popup.tsx";
 import SymptomSelector from "../components/SymptomSelector.tsx";
 import {useStore} from "../store/store.ts";
 import {supabase} from "../util/supabaseClient.ts";
-import {getEmotionSymptomEntry} from "../util/getEmotionSymptomEntry.ts";
 import {DiaryEntry} from "../types/diary.ts";
 
 export default function DiaryEditPage() {
@@ -26,7 +25,7 @@ export default function DiaryEditPage() {
     const [title, setTitle] = useState<string>("");
 
     const [selectedColor, setSelectedColor] = useState<string>("");
-    const [selectedSymptom, setSelectedSymptom] = useState<string>("");
+    const [selectedSymptomId, setSelectedSymptomId] = useState<number | null>(null);
     const [customSymptom, setCustomSymptom] = useState<string>("");
     const [content, setContent] = useState<string>("");
 
@@ -52,19 +51,22 @@ export default function DiaryEditPage() {
             setTitle(data.title);
             setContent(data.content);
 
-            const {emotion, symptom} = getEmotionSymptomEntry(
-                data, emotionColors, symptoms
-            );
-            setSelectedColor(emotion.hex_code);
-
-            if (data.custom_symptom) {
-                setSelectedSymptom(data.custom_symptom);
-                setCustomSymptom(data.custom_symptom);
+            if (data.custom_emotion_color && data.custom_emotion_color.trim() !== "") {
+                setSelectedColor(data.custom_emotion_color);
             } else {
-                setSelectedSymptom(symptom.emoji);
+                const emotionRecord = emotionColors.find((color) => color.id === data.emotion_color_id);
+                setSelectedColor(emotionRecord?.hex_code || "");
+            }
+
+            if (data.custom_symptom && data.custom_symptom.trim() !== "") {
+                setCustomSymptom(data.custom_symptom);
+                setSelectedSymptomId(null);
+            } else {
+                setCustomSymptom("");
+                setSelectedSymptomId(data.symptom_id);
             }
         })();
-    }, [entryId, emotionColors, symptoms]);
+    }, [entryId, emotionColors]);
 
     const handleSave = async () => {
         if (title.trim().length < 3) {
@@ -79,18 +81,17 @@ export default function DiaryEditPage() {
             alert("오늘의 감정 색상 또는 커스텀 색상을 하나 선택해주세요!");
             return;
         }
-        if (!selectedSymptom) {
+        if (!customSymptom.trim() &&!selectedSymptomId) {
             alert("오늘의 신체 증상 또는 직접 입력한 증상을 기록해주세요!");
             return;
         }
 
     const matchedEmotion = emotionColors.find((color) => color.hex_code === selectedColor);
-    const matchedSymptom = symptoms.find((s) => s.emoji === selectedSymptom);
 
     const payload: Partial<DiaryEntry> = {
         title,
         content,
-    }
+    };
 
     if (matchedEmotion) {
         payload.emotion_color_id = matchedEmotion.id;
@@ -100,12 +101,12 @@ export default function DiaryEditPage() {
         payload.custom_emotion_color = selectedColor;
     }
 
-    if (matchedSymptom) {
-        payload.symptom_id = matchedSymptom.id;
-        payload.custom_symptom = null;
-    } else {
-        payload.custom_symptom = customSymptom;
+    if (customSymptom.trim() !== "") {
+        payload.custom_symptom = customSymptom.trim();
         payload.symptom_id = null;
+    } else if (selectedSymptomId) {
+        payload.symptom_id = selectedSymptomId;
+        payload.custom_symptom = null;
     }
 
     const {error} = await supabase
@@ -121,6 +122,8 @@ export default function DiaryEditPage() {
     alert("일기 수정이 완료되었습니다!");
     navigate(`/writing-list/${entryId}`);
     };
+
+    const selectedSymptomRecord = symptoms.find((symptom) => symptom.id === selectedSymptomId);
 
     return (
         <div className="edit-container">
@@ -159,21 +162,28 @@ export default function DiaryEditPage() {
                         <Circle label="증상"
                                 bordered
                                 onClick={()=> setSymptomSelectorOpen(true)}
-                        > {customSymptom ? "🤔" : selectedSymptom}
+                        > {customSymptom.trim() !== "" ? "🤔" : selectedSymptomRecord?.emoji || "?"}
                         </Circle>
-                            {customSymptom && (
+
+                            {customSymptom.trim() !== "" ? (
                             <span className="custom-symptom-box">증상 : {customSymptom}</span>
+                            ) : (
+                                selectedSymptomRecord && <span className="custom-symptom-box">증상 : {selectedSymptomRecord.name}</span>
                             )}
+
                             {symptomSelectorOpen && (
                                 <Popup
                                     title="신체 증상 선택"
                                     onClose={() => setSymptomSelectorOpen(false)}
-                                    onSave={() => {setSymptomSelectorOpen(false);}}
+                                    onSave={() => setSymptomSelectorOpen(false)}
                                 >
                                     <SymptomSelector
                                         symptoms={symptoms}
-                                        selectedSymptom={selectedSymptom}
-                                        setSelectedSymptom={setSelectedSymptom}/>
+                                        selectedSymptomId={selectedSymptomId}
+                                        setSelectedSymptomId={setSelectedSymptomId}
+                                        customSymptom={customSymptom}
+                                        setCustomSymptom={setCustomSymptom}
+                                    />
                                 </Popup>
                             )}
                 </div>

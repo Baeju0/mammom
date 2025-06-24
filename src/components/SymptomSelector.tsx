@@ -4,20 +4,20 @@ import {Symptom} from "../store/store.ts";
 
 interface SymptomSelectorProps {
     symptoms: Symptom[];
-    selectedSymptom: string;
-    setSelectedSymptom: (symptoms: string) => void;
+    selectedSymptomId: number | null;
+    setSelectedSymptomId: (id: number | null) => void;
     customSymptom?: string;
-    setCustomSymptom?: (symptoms: string) => void
+    setCustomSymptom?: (custom_symptom: string) => void
 }
 
 export default function SymptomSelector({
       symptoms,
-      selectedSymptom,
-      setSelectedSymptom,
+      selectedSymptomId,
+      setSelectedSymptomId,
       customSymptom,
       setCustomSymptom,
 }: SymptomSelectorProps) {
-    const isCustom = selectedSymptom === "기타";
+    const isCustom = selectedSymptomId === null;
 
     return (
         <div className="flex flex-col items-center gap-4 mb-3">
@@ -27,11 +27,11 @@ export default function SymptomSelector({
                         key={symptom.id}
                         type="button"
                         className={`px-4 py-1 rounded-full border flex items-center gap-1
-                    ${selectedSymptom === symptom.emoji
+                    ${selectedSymptomId === symptom.id
                             ? "bg-pink-200 border-pink-400 font-bold"
                             : "bg-white border-gray-300"}`}
                         onClick={() => {
-                            setSelectedSymptom?.(symptom.emoji);
+                            setSelectedSymptomId?.(symptom.id);
                             setCustomSymptom?.("");
                         }}
                     >
@@ -46,7 +46,7 @@ export default function SymptomSelector({
                     ? "bg-pink-200 border-pink-400 font-bold"
                     : "bg-white border-gray-300"}`}
                     onClick={() => {
-                        setSelectedSymptom?.("기타");
+                        setSelectedSymptomId(null);
                         setCustomSymptom?.("");
                     }}
                 >
