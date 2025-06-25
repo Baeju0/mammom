@@ -90,7 +90,7 @@ export default function DetailedDiaryPage() {
                             bordered
                     > {symptom.emoji}
                     </Circle>
-                    {entry?.custom_symptom && (
+                    {(entry?.custom_symptom || symptom.name) && (
                         <span className="custom-symptom-box">
                             {entry?.custom_symptom ? `기타 증상: ${entry?.custom_symptom}` : `증상: ${symptom.name}`}</span>
                     )}

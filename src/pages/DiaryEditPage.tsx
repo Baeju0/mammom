@@ -166,7 +166,7 @@ export default function DiaryEditPage() {
                         </Circle>
 
                             {customSymptom.trim() !== "" ? (
-                            <span className="custom-symptom-box">증상 : {customSymptom}</span>
+                            <span className="custom-symptom-box">기타 증상 : {customSymptom}</span>
                             ) : (
                                 selectedSymptomRecord && <span className="custom-symptom-box">증상 : {selectedSymptomRecord.name}</span>
                             )}
