@@ -14,6 +14,7 @@ import {supabase} from "../util/supabaseClient.ts";
 import {DiaryEntry} from "../types/diary.ts";
 import {getEmotionSymptomEntry} from "../util/getEmotionSymptomEntry.ts";
 
+const SEOUL = {lat: 37.6, lon: 127};
 interface Weather {
     temp: number;
     main: string;
@@ -22,28 +23,27 @@ interface Weather {
 
 export default function Home() {
     const {emotionColors, symptoms} = useStore.getState();
-
     const user = useStore((state) => state.user);
-    const [recordedDates, setRecordedDates] = useState<Date[]>([]);
-    const [dailyEntry, setDailyEntry] = useState<DiaryEntry | null>(null);
-
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [showPopup, setShowPopup] = useState(false);
     const locationAgreed = useStore((state) => state.locationAgreed);
     const setLocationAgreed = useStore((state) => state.setLocationAgreed);
+    const setWeatherStore = useStore((state) => state.setWeather);
+
+    const [recordedDates, setRecordedDates] = useState<Date[]>([]);
+    const [dailyEntry, setDailyEntry] = useState<DiaryEntry | null>(null);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [showPopup, setShowPopup] = useState(false);
+    const [userWeather, setUserWeather] = useState<Weather | null>(null);
+
+    const navigate = useNavigate();
+    const { latitude, longitude } = useUserLocation(!!user && locationAgreed);
+    const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
     function handleGoToWritingDetail(id: number) {
         navigate(`/writing-list/${id}`);
     }
-
-    const navigate = useNavigate();
     function handleGoToDataDetail() {
         navigate("/data-detail");
     }
-
-    const { latitude, longitude } = useUserLocation(!!user && locationAgreed);
-    const [weather, setWeather] = useState<Weather | null>(null);
-    const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
     // 위치 정보 동의한 유저인지 확인
     useEffect(() => {
@@ -58,23 +58,35 @@ export default function Home() {
             });
     }, [user, setLocationAgreed]);
 
+    // 여기는 사용자 위치에 따른 날씨 표시
     useEffect(() => {
         if (latitude == null || longitude == null) return;
 
-        const fetchWeather = async () => {
+        (async () => {
             const res = await fetch(
-                (`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`)
-            );
+                `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`);
             const json = await res.json();
-            setWeather({
-                temp: json.main.temp.toFixed(1),
+            setUserWeather({
+                temp: Number(json.main.temp.toFixed(1)),
                 main: json.weather[0].main,
                 icon: json.weather[0].icon
             });
-            // console.log(json);
-        };
-        fetchWeather();
+        })();
     }, [latitude, longitude, API_KEY]);
+
+    // DB에 저장할 서울 날씨, 추후 지역별로 확장 고려
+    useEffect(() => {
+        (async () => {
+            const res = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?lat=${SEOUL.lat}&lon=${SEOUL.lon}&appid=${API_KEY}&units=metric`);
+            const json = await res.json();
+            setWeatherStore({
+                temp: Number(json.main.temp.toFixed(1)),
+                main: json.weather[0].main,
+                icon: json.weather[0].icon
+            });
+        })();
+    }, [API_KEY, setWeatherStore]);
 
     // 일기 작성된 날짜 조회
     useEffect(() => {
@@ -143,14 +155,14 @@ export default function Home() {
             </section>
 
             <div className="weather-info-box">
-                {weather && (
-                    <img src={`https://openweathermap.org/img/wn/${weather?.icon}@2x.png`}
-                         alt={weather?.main}
+                {userWeather && (
+                    <img src={`https://openweathermap.org/img/wn/${userWeather.icon}@2x.png`}
+                         alt={userWeather.main}
                          width={24}
                          height={24}
                          className="weather-icon-bg"
                     />)}
-                <span>{weather?.main} | {weather?.temp}°C </span>
+                <span>{userWeather?.main} | {userWeather?.temp}°C </span>
             </div>
 
             <main className="card-layout">

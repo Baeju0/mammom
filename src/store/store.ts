@@ -14,6 +14,12 @@ export interface Symptom {
     emoji: string;
 }
 
+export interface Weather {
+    temp: number;
+    main: string;
+    icon: string;
+}
+
 interface AppState {
     // 유저 상태
     user: User | null;
@@ -35,18 +41,22 @@ interface AppState {
     baseDataLoading: boolean;
     setBaseDataLoading: (loading: boolean) => void;
     fetchBaseData: () => Promise<void>;
+    weather: Weather | null;
+    setWeather: (weather: Weather | null) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
     user: null,
     nickname: "",
     locationAgreed: false,
+    weather: null,
     selectedColor: "",
     selectedSymptom: "",
 
     setUser: (user) => set({user}),
     setNickname: (nickname) => set({nickname}),
     setLocationAgreed: (locationAgreed) => set({locationAgreed}),
+    setWeather: (weather) => set({weather}),
     setSelectedColor: (color) => set({selectedColor: color}),
     setSelectedSymptom: (selectedSymptom) => set({selectedSymptom}),
     setBaseDataLoading: (baseDataLoading) => set({baseDataLoading}),

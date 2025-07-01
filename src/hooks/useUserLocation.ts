@@ -15,13 +15,16 @@ export default function useUserLocation(enabled: boolean) {
         // 로그인이나 동의를 안 했을 시 위치 요청 안 함
         if(!enabled) return;
 
-        navigator.geolocation.getCurrentPosition((pos) => {
+        navigator.geolocation.getCurrentPosition(
+            (pos) =>
             setLocation({
                 latitude: pos.coords.latitude,
                 longitude: pos.coords.longitude,
-            });
-        },
-            ()=>{}
+            }),
+            ()=>{
+                setLocation({ latitude: 37.6, longitude: 127 });
+            },
+            {timeout: 7000}
         );
     }, [enabled]);
 
