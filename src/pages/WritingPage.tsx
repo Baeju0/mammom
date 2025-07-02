@@ -9,14 +9,17 @@ import SymptomSelector from "../components/SymptomSelector.tsx";
 import {useStore} from "../store/store.ts";
 import {DiaryEntryInsert} from "../types/diary.ts";
 import {supabase} from "../util/supabaseClient.ts";
+import {format} from "date-fns";
 
 export default function WritingPage() {
     const navigate = useNavigate();
     const today = new Date();
+    const todayString = format(today, "yyyy-MM-dd");
 
     const emotionColors = useStore((state) => state.emotionColors);
     const symptoms = useStore((state) => state.symptoms);
     const user = useStore((state) => state.user);
+    const weather = useStore((state) => state.weather);
 
     const [selectedColor, setSelectedColor] = useState<string>("");
     const [selectedSymptomId, setSelectedSymptomId] = useState<number | null>(null);
@@ -25,7 +28,12 @@ export default function WritingPage() {
     const [title, setTitle] = useState<string>("");
     const [content, setContent] = useState<string>("");
 
+    const [saveLoading, setSaveLoading] = useState(false);
+
     const handleSave = async () => {
+        if (saveLoading) return;
+        setSaveLoading(true);
+
         if (!user?.id) {
             alert("사용자 정보가 올바르지 않습니다. 로그인 후 다시 시도해주세요.");
             return;
@@ -64,31 +72,45 @@ export default function WritingPage() {
             content,
             entry_date: today.toISOString().split("T")[0],
             profile_id: user!.id,
-            emotion_color_id: null,
-            symptom_id: null,
-            custom_emotion_color: null,
-            custom_symptom: null
+            emotion_color_id: matchedEmotion ? matchedEmotion.id : null,
+            symptom_id: matchedSymptom ? matchedSymptom.id :null,
+            custom_emotion_color: matchedEmotion ? null : selectedColor,
+            custom_symptom: matchedSymptom ? null : customSymptom,
         };
-
-        if (matchedEmotion) {
-            payload.emotion_color_id = matchedEmotion.id;
-        } else {
-            payload.custom_emotion_color = selectedColor;
-        }
-
-        if (matchedSymptom) {
-            payload.symptom_id = matchedSymptom.id;
-        } else {
-            payload.custom_symptom = customSymptom;
-        }
 
         const {error} = await supabase
             .from("diary_entry")
             .insert(payload);
         if (error) {
             console.log("일기 저장 실패:", error);
-            return;
+            return alert("일기 저장에 실패했어요..");
         }
+
+        if (weather) {
+            const {error: insertError} = await supabase
+                .from("weather_data")
+                .insert({
+                    date: todayString,
+                    condition: weather.main,
+                    temp: Math.round(weather.temp),
+                });
+
+            if (insertError) {
+                if (insertError.code === "23505") {
+                    await supabase
+                        .from("weather_data")
+                        .update({
+                            condition: weather.main,
+                            temp: Math.round(weather.temp),
+                        })
+                        .eq("date", todayString);
+                } else {
+                    // if (import.meta.env.MODE === "development") console.error(insertError);
+                }
+            }
+        }
+
+        setSaveLoading(false);
         alert("일기 저장 완료!");
         navigate("/");
     }
