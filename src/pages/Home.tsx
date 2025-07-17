@@ -166,7 +166,7 @@ export default function Home() {
             </div>
 
             <main className="card-layout">
-                <Card title="추천 활동" className="recommend-card">
+                <Card title="🌟오늘의 추천 활동!" className="recommend-card">
                     <RecommendedActivities/>
                 </Card>
 
