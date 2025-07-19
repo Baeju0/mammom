@@ -7,6 +7,10 @@ export interface ActivityDetail {
     tip: string;
 }
 
+export interface ActivityDetailPage extends ActivityDetail {
+    activity_text: string;
+}
+
 export interface Activity {
     id: number;
     activity_text: string;
@@ -181,4 +185,39 @@ export async function fetchDefaultRecommended(): Promise<Activity[]> {
         console.log(e);
     }
     return randomRecommended;
+}
+
+// 추천 활동의 상세 내용 불러오기
+export async function fetchActivityDetail(
+    activityId: number
+): Promise<ActivityDetailPage> {
+    const {data: detailData, error: detailError} = await supabase
+        .from("recommended_activity_detail")
+        .select("reason, how, recommended_time, tip")
+        .eq("recommended_activity_id", activityId)
+        .single();
+
+    if (detailError || !detailData) {
+        console.log("추천 활동 상세 조회 실패: ", detailError);
+        throw new Error("추천 활동 상세 조회 실패");
+    }
+
+    const {data: activityData, error: activityError} = await supabase
+        .from("recommended_activity")
+        .select("activity_text")
+        .eq("id", activityId)
+        .single();
+
+    if (activityError || !activityData) {
+        console.log("추천 활동 제목 조회 실패: ", activityError);
+        throw new Error("추천 활동 제목 조회 실패");
+    }
+
+    return {
+        activity_text: activityData.activity_text,
+        reason: detailData.reason,
+        how: detailData.how,
+        recommended_time: detailData.recommended_time,
+        tip: detailData.tip
+    };
 }
