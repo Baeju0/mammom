@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Card from "../components/Card.tsx";
 import {useEffect, useState} from "react";
 import {ActivityDetailPage, fetchActivityDetail} from "../util/recommendUtils.ts";
 
 export default function RecommendDetailPage() {
     const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
 
     const [activity, setActivity] = useState<ActivityDetailPage | null>(null);
     const [loading, setLoading] = useState(true);
@@ -36,7 +37,7 @@ export default function RecommendDetailPage() {
     if (!activity) return <div>추천 활동 상세 조회 실패</div>
 
     return (
-        <Card className="max-w-md mx-auto mt-5">
+        <Card className="max-w-md mx-auto mt-5" backable={true} onBack={() => navigate(-1)}>
 
             <div className="space-y-6">
                 <h2 className="activity-detail-title">{activity.activity_text}</h2>
