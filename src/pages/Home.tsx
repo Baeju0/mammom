@@ -13,6 +13,7 @@ import {useStore} from "../store/store.ts";
 import {supabase} from "../util/supabaseClient.ts";
 import {DiaryEntry} from "../types/diary.ts";
 import {getEmotionSymptomEntry} from "../util/getEmotionSymptomEntry.ts";
+import {hasWrittenToday} from "../util/recommendUtils.ts";
 
 const SEOUL = {lat: 37.6, lon: 127};
 interface Weather {
@@ -37,6 +38,19 @@ export default function Home() {
     const navigate = useNavigate();
     const { latitude, longitude } = useUserLocation(!!user && locationAgreed);
     const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+
+    const [hasDiary, setHasDiary] = useState<boolean|null>(null);
+
+    useEffect(() => {
+        if (!user) {
+            setHasDiary(false);
+            return;
+        }
+        hasWrittenToday(user.id)
+            .then(setHasDiary)
+            .catch(() => setHasDiary(false));
+    }, [user]);
+    const title = hasDiary ? "🎯오늘의 맞춤 추천 활동!" : "🌱 기본 추천 활동!";
 
     function handleGoToWritingDetail(id: number) {
         navigate(`/writing-list/${id}`);
@@ -166,7 +180,7 @@ export default function Home() {
             </div>
 
             <main className="card-layout">
-                <Card title="🌟오늘의 추천 활동!" className="recommend-card">
+                <Card title= {title} className="recommend-card">
                     <RecommendedActivities/>
                 </Card>
 
