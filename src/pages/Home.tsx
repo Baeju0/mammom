@@ -50,7 +50,7 @@ export default function Home() {
             .then(setHasDiary)
             .catch(() => setHasDiary(false));
     }, [user]);
-    const title = hasDiary ? "🎯오늘의 맞춤 추천 활동!" : "🌱 기본 추천 활동!";
+    const title = hasDiary ? "🎯오늘의 맞춤 추천 활동!" : "🌱 기본 추천 활동";
 
     function handleGoToWritingDetail(id: number) {
         navigate(`/writing-list/${id}`);
